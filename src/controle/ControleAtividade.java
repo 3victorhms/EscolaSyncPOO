@@ -10,8 +10,8 @@ public class ControleAtividade {
         repositorioAtividade = new RepositorioAtividade();
     }
 
-    public void adicionar(Atividade atividade) {
-        repositorioAtividade.adicionar(atividade);
+    public boolean adicionar(Atividade atividade) {
+        return repositorioAtividade.adicionar(atividade);
     }
 
     public boolean remover(Atividade atividade) {

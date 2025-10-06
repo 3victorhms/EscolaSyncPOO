@@ -40,6 +40,10 @@ public class Sistema {
         return controleSala.remover(sala);
     }
 
+    public boolean entrarSala(int id) {
+        return controleSala.entrarSala(id);
+    }
+
     public boolean adicionarAtividade(Atividade atividade) {
         return controleAtividade.adicionar(atividade);
     }
