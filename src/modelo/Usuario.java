@@ -15,4 +15,5 @@ public class Usuario {
         return new Usuario(username, email, password);
     }
 
+    
 }
