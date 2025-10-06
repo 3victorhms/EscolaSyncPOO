@@ -1,0 +1,30 @@
+package modelo;
+
+public class Grupo {
+    protected int id;
+    protected String nome;
+    protected Sala sala;
+    protected Usuario lider;
+
+    protected static int proxId = 1;
+
+    protected Grupo(String nome, Sala sala, Usuario lider) {
+        this.id = proxId++;
+        this.nome = nome;
+        this.sala = sala;
+        this.lider = lider;
+    }
+
+    public static Grupo getInstance(String nome, Sala sala, Usuario lider) {
+        if (nome.isEmpty() || sala == null || lider == null) return null;
+        return new Grupo(nome, sala, lider);
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Sala getSala() {
+        return sala;
+    }
+}
