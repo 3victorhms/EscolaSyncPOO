@@ -15,4 +15,8 @@ public class RepositorioAtividade {
     public void adicionar(Atividade atividade) {
         atividades.add(atividade);
     }
+
+    public boolean remover(Atividade atividade) {
+        return atividades.remove(atividade);
+    }
 }

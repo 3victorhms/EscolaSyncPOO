@@ -4,6 +4,8 @@ import modelo.*;
 
 public class Sistema {
     protected ControleUsuario controleUsuario;
+    protected ControleSala controleSala;
+    protected ControleAtividade controleAtividade;
 
     private static Sistema instance;
 
@@ -31,11 +33,19 @@ public class Sistema {
     }
 
     public boolean adicionarSala(Sala sala) {
-        return false;
+        return controleSala.adicionar(sala);
     }
 
-    public Data validarData(String data) {
-        return Data.
+    public boolean removerSala(Sala sala) {
+        return controleSala.remover(sala);
+    }
+
+    public boolean adicionarAtividade(Atividade atividade) {
+        return controleAtividade.adicionar(atividade);
+    }
+
+    public boolean removerAtividade(Atividade atividade) {
+        return controleAtividade.remover(atividade);
     }
 
 }

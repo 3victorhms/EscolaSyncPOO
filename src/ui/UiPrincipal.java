@@ -52,13 +52,13 @@ public class UiPrincipal {
                             uiUsuario.entrarSala();
                             break;
                         case 3:
-                            uiGrupo.criarGrupo();
+                            uiGrupo.adicionar();
                             break;
                         case 4:
                             uiUsuario.entrarGrupo();
                             break;
                         case 5:
-                            uiAtividade.criarAtividade();
+                            uiAtividade.adicionar();
                             break;
                         case 6:
                             uiUsuario.atribuirAtividade();
@@ -66,10 +66,9 @@ public class UiPrincipal {
                         case 7:
                             break;
                     }
-
                     break;
             }
-        }
+        } while (opcaoPrincipal != 7);
 
     }
 
