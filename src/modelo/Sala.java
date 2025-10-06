@@ -23,4 +23,12 @@ public class Sala {
         if (nome == null || descricao == null || dataCriacao == null || lider == null) return null;
         return new Sala(nome, descricao, dataCriacao, lider);
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 }

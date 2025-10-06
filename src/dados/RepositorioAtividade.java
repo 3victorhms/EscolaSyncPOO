@@ -12,8 +12,8 @@ public class RepositorioAtividade {
         atividades = new ArrayList<>();
     }
 
-    public void adicionar(Atividade atividade) {
-        atividades.add(atividade);
+    public boolean adicionar(Atividade atividade) {
+        return atividades.add(atividade);
     }
 
     public boolean remover(Atividade atividade) {

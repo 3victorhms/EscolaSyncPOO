@@ -42,7 +42,10 @@ public class UiUsuario {
     }
 
     public boolean entrarSala() {
-        return false;
+        System.out.println("Insira o ID da sala: ");
+        int id = scn.nextInt();
+        scn.nextLine();
+        return sistema.entrarSala(id);
     }
 
     public boolean entrarGrupo() {
