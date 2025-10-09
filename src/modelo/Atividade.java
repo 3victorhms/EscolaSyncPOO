@@ -3,6 +3,7 @@ package modelo;
 import java.util.Date;
 
 public class Atividade {
+
     protected int id;
     protected String nome;
     protected String descricao;
