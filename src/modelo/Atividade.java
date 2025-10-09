@@ -26,4 +26,32 @@ public class Atividade {
     public static Atividade getInstance(String nome, String descricao, String status, Data dataEntrega, Data dataConclusao, String materia, double valor) {
         return new Atividade(nome, descricao, status, dataEntrega, dataConclusao, materia, valor);
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Date getDataEntrega() {
+        return dataEntrega;
+    }
+
+    public Date getDataConclusao() {
+        return dataConclusao;
+    }
+
+    public String getMateria() {
+        return materia;
+    }
+
+    public double getValor() {
+        return valor;
+    }
 }
