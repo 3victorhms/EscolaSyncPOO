@@ -58,4 +58,8 @@ public class UiSala {
             System.out.println(">>> Username inválido!");
         }
     }
+
+    public void excluir() {
+
+    }
 }

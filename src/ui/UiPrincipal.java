@@ -67,6 +67,31 @@ public class UiPrincipal {
                             break;
                     }
                     break;
+                case 2:
+                    int opcaoExcluir = 0;
+                    opcaoExcluir = menuExcluir();
+                    switch (opcaoExcluir) {
+                        case 1:
+                            uiSala.excluir();
+                        case 2:
+                            uiUsuario.sairSala();
+                            break;
+                        case 3:
+                            uiGrupo.excluir();
+                            break;
+                        case 4:
+                            uiUsuario.sairGrupo();
+                            break;
+                        case 5:
+                            uiAtividade.excluir();
+                            break;
+                        case 6:
+                            uiUsuario.removerAtribuicao();
+                            break;
+                        case 7:
+                            break;
+                    } case 3:
+
             }
         } while (opcaoPrincipal != 7);
 

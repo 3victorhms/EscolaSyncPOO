@@ -41,18 +41,30 @@ public class UiUsuario {
         }
     }
 
-    public boolean entrarSala() {
+    public void entrarSala() {
         System.out.println("Insira o ID da sala: ");
         int id = scn.nextInt();
         scn.nextLine();
-        return sistema.entrarSala(id);
+        if (sistema.entrarSala(id)) {
+            System.out.println("Sala acessada com sucesso!");
+        } else {
+            System.out.println("Sala não encontrada!");
+        }
     }
 
-    public boolean entrarGrupo() {
-        return false;
+    public void entrarGrupo() {
+
     }
 
-    public boolean atribuirAtividade() {
-        return false;
+    public void atribuirAtividade() {
+    }
+
+    public void sairSala() {
+    }
+
+    public void sairGrupo() {
+    }
+
+    public void removerAtribuicao() {
     }
 }

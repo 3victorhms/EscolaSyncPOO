@@ -14,7 +14,11 @@ public class ControleAtividade {
         return repositorioAtividade.adicionar(atividade);
     }
 
-    public boolean remover(Atividade atividade) {
+    public boolean excluir(Atividade atividade) {
         return repositorioAtividade.remover(atividade);
+    }
+
+    public Atividade buscarAtividade(int codigo){
+        return repositorioAtividade.buscarAtividade(codigo);
     }
 }

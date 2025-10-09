@@ -48,8 +48,11 @@ public class Sistema {
         return controleAtividade.adicionar(atividade);
     }
 
-    public boolean removerAtividade(Atividade atividade) {
-        return controleAtividade.remover(atividade);
+    public void excluirAtividade(int codigo) {
+        controleAtividade.excluir(this.buscarAtividade(codigo));
     }
 
+    public Atividade buscarAtividade(int codigo){
+        return controleAtividade.buscarAtividade(codigo);
+    }
 }
