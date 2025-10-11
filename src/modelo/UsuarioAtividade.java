@@ -3,10 +3,12 @@ package modelo;
 public class UsuarioAtividade {
     protected Usuario usuario;
     protected Atividade atividade;
+    protected String status;
 
     protected UsuarioAtividade(Usuario usuario, Atividade atividade) {
         this.usuario = usuario;
         this.atividade = atividade;
+        this.status = "Pendente";
     }
 
     public UsuarioAtividade getInstance(Usuario usuario, Atividade atividade) {
@@ -20,5 +22,13 @@ public class UsuarioAtividade {
 
     public Atividade getAtividade() {
         return atividade;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

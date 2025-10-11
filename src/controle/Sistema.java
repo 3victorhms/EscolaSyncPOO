@@ -56,4 +56,30 @@ public class Sistema {
     public Atividade buscarAtividade(int codigo){
         return controleAtividade.buscarAtividade(codigo);
     }
+
+    public boolean alterarNomeAtividade(int codigo, String nome) {
+        return controleAtividade.alterarNome(codigo, nome);
+    }
+
+    public boolean alterarDescricaoAtividade(int codigo, String descricao) {
+        return controleAtividade.alterarDescricao(codigo, descricao);
+    }
+
+    public boolean alterarDataEntregaAtividade(int codigo, java.util.Date data) {
+        return controleAtividade.alterarDataEntrega(codigo, data);
+    }
+
+    public boolean alterarDataConclusaoAtividade(int codigo, java.util.Date data) {
+        return controleAtividade.alterarDataConclusao(codigo, data);
+    }
+
+    public boolean alterarMateriaAtividade(int codigo, String materia) {
+        return controleAtividade.alterarMateria(codigo, materia);
+    }
+
+    public boolean alterarValorAtividade(int codigo, double valor) {
+        return controleAtividade.alterarValor(codigo, valor);
+    }
+
+
 }
