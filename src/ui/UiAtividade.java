@@ -56,7 +56,13 @@ public class UiAtividade {
     public void excluir() {
         System.out.println("Insira o código da atividade:");
         int codigo = scn.nextInt();
-        sistema.excluirAtividade(codigo);
+        scn.nextLine();
+        if (codigo <= 0)
+            System.out.println(">>> Código inválido!");
+        else if (sistema.excluirAtividade(codigo))
+            System.out.println("Atividade excluída com sucesso!");
+        else
+            System.out.println("Atividade não encontrada!");
     }
 
 
