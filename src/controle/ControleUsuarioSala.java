@@ -10,11 +10,11 @@ public class ControleUsuarioSala {
         repositorioUsuarioSala = new RepositorioUsuarioSala();
     }
 
-    public boolean adicionar(UsuarioSala usuarioSala) {
+    public boolean entrarSala(UsuarioSala usuarioSala) {
         return repositorioUsuarioSala.adicionar(usuarioSala);
     }
 
-    public boolean remover(UsuarioSala usuarioSala) {
+    public boolean sairSala(UsuarioSala usuarioSala) {
         return repositorioUsuarioSala.remover(usuarioSala);
     }
 }

@@ -6,6 +6,7 @@ public class Sistema {
     protected ControleUsuario controleUsuario;
     protected ControleSala controleSala;
     protected ControleAtividade controleAtividade;
+    protected ControleUsuarioSala controleUsuarioSala;
 
     private static Sistema instance;
 
@@ -40,8 +41,8 @@ public class Sistema {
         return controleSala.remover(sala);
     }
 
-    public boolean entrarSala(int id) {
-        return controleSala.entrarSala(id);
+    public boolean entrarSala(int idSala) {
+        return controleUsuarioSala.entrarSala(UsuarioSala.getInstance(controleUsuario.getUsuarioAtual(), controleSala.buscarSala(idSala)));
     }
 
     public boolean adicionarAtividade(Atividade atividade) {

@@ -30,6 +30,10 @@ public class Atividade {
         return new Atividade(nome, descricao, status, dataEntrega, dataConclusao, materia, valor);
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }

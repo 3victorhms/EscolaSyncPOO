@@ -7,9 +7,23 @@ import java.util.List;
 
 public class RepositorioUsuario {
     List<Usuario> usuarios;
+    Usuario usuarioAtual;
 
     public RepositorioUsuario() {
         usuarios = new ArrayList<>();
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public Usuario getUsuarioAtual() {
+        return usuarioAtual;
+    }
+
+    public void setUsuarioAtual(Usuario usuarioAtual) {
+        if (usuarioAtual != null)
+            this.usuarioAtual = usuarioAtual;
     }
 
     public boolean cadastrar(Usuario usuario) {
@@ -23,10 +37,16 @@ public class RepositorioUsuario {
     public boolean login(Usuario usuario) {
         for (Usuario u : usuarios) {
             if (u.getUsername().equalsIgnoreCase(usuario.getUsername()) && u.getPassword().equalsIgnoreCase(usuario.getPassword())) {
+                this.setUsuarioAtual(u);
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean logout() {
+        this.setUsuarioAtual(null);
+        return true;
     }
 
     public boolean verificarUsername(String username) {
@@ -38,7 +58,7 @@ public class RepositorioUsuario {
         return true;
     }
 
-    public Usuario buscarUsuario(String username){
+    public Usuario buscarUsuario(String username) {
         for (Usuario usuario : usuarios) {
             if (usuario.getUsername().equals(username)) {
                 return usuario;
@@ -46,4 +66,5 @@ public class RepositorioUsuario {
         }
         return null;
     }
+
 }

@@ -17,4 +17,8 @@ public class ControleSala {
     protected boolean remover(Sala sala) {
         return repositorioSala.remover(sala);
     }
+
+    public Sala buscarSala(int idSala) {
+        return repositorioSala.buscarSala(idSala);
+    }
 }

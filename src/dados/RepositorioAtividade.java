@@ -8,6 +8,10 @@ import java.util.List;
 public class RepositorioAtividade {
     List<Atividade> atividades;
 
+    public List<Atividade> getAtividades() {
+        return atividades;
+    }
+
     public RepositorioAtividade() {
         atividades = new ArrayList<>();
     }
@@ -21,8 +25,8 @@ public class RepositorioAtividade {
     }
 
     public Atividade buscarAtividade(int codigo){
-        for(Atividade atividade : atividades){
-            if(atividade.getCodigo() == codigo) return atividade;
+        for(Atividade atividade : this.getAtividades()){
+            if(atividade.getId() == codigo) return atividade;
         }
         return null;
     }
