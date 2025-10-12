@@ -20,11 +20,19 @@ public class Grupo {
         return new Grupo(nome, sala, lider);
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }
 
     public Sala getSala() {
         return sala;
+    }
+
+    public Usuario getLider() {
+        return lider;
     }
 }

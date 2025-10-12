@@ -7,11 +7,21 @@ public class Sistema {
     protected ControleSala controleSala;
     protected ControleAtividade controleAtividade;
     protected ControleUsuarioSala controleUsuarioSala;
+    protected ControleUsuarioAtividade controleUsuarioAtividade;
+    protected ControleUsuarioGrupo controleUsuarioGrupo;
+    protected ControleSalaAtividade controleSalaAtividade;
+    protected ControleGrupo controleGrupo;
 
     private static Sistema instance;
 
     protected Sistema() {
         controleUsuario = new ControleUsuario();
+        controleSala = new ControleSala();
+        controleAtividade = new ControleAtividade();
+        controleUsuarioSala = new ControleUsuarioSala();
+        controleUsuarioAtividade = new ControleUsuarioAtividade();
+        controleUsuarioGrupo = new ControleUsuarioGrupo();
+        controleGrupo = new ControleGrupo();
     }
 
     public static Sistema getInstance() {
@@ -37,8 +47,20 @@ public class Sistema {
         return controleSala.adicionar(sala);
     }
 
-    public boolean removerSala(Sala sala) {
-        return controleSala.remover(sala);
+    public boolean excluirSala(int codigo) {
+        return controleSala.excluir(controleSala.buscarSala(codigo));
+    }
+
+    public boolean removerAlunosSala(int codigo) {
+        return controleUsuarioSala.removerAlunosSala(controleSala.buscarSala(codigo));
+    }
+
+    public boolean removerAtividadesSala(int codigo) {
+        return controleSalaAtividade.removerAtividadesSala(controleSala.buscarSala(codigo));
+    }
+
+    public boolean removerGruposSala(int codigo) {
+        return controleGrupo.removerGruposSala(controleSala.buscarSala(codigo));
     }
 
     public boolean entrarSala(int idSala) {
@@ -82,4 +104,11 @@ public class Sistema {
     }
 
 
+    public boolean entrarGrupo(Grupo grupo) {
+        return controleUsuarioGrupo.entrarGrupo(this.controleUsuario.getUsuarioAtual(), grupo);
+    }
+
+    public Grupo buscarGrupo(int codigo) {
+        return controleGrupo.buscarGrupo(codigo);
+    }
 }

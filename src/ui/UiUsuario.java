@@ -1,6 +1,7 @@
 package ui;
 
 import controle.Sistema;
+import modelo.Grupo;
 import modelo.Usuario;
 
 import java.util.Random;
@@ -53,18 +54,35 @@ public class UiUsuario {
     }
 
     public void entrarGrupo() {
-
+        System.out.println("Insira o código do grupo: ");
+        int codigo = scn.nextInt();
+        scn.nextLine();
+        if (codigo > 0) {
+            Grupo g = sistema.buscarGrupo(codigo);
+            if (g != null) {
+                if (sistema.entrarGrupo(g)) {
+                    System.out.println("Grupo acessado com sucesso!");
+                } else {
+                    System.out.println("Erro ao acessar grupo!");
+                }
+            } else {
+                System.out.println("Grupo não encontrado!");
+            }
+        }
     }
 
     public void atribuirAtividade() {
     }
 
+    public void removerAtribuicao() {
+    }
+
     public void sairSala() {
+        
     }
 
     public void sairGrupo() {
     }
 
-    public void removerAtribuicao() {
-    }
+
 }

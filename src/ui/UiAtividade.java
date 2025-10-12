@@ -45,7 +45,7 @@ public class UiAtividade {
                         System.out.println("Insira o valor da atividade:");
                         double valor = scn.nextDouble();
                         if (valor > 0) {
-                            sistema.adicionarAtividade(Atividade.getInstance(nome, descricao, "Não iniciado", dataEntrega, null, materia, valor));
+                            sistema.adicionarAtividade(Atividade.getInstance(nome, descricao, dataEntrega, null, materia, valor));
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 package controle;
 
 import dados.RepositorioUsuarioSala;
+import modelo.Sala;
 import modelo.UsuarioSala;
 
 public class ControleUsuarioSala {
@@ -16,5 +17,9 @@ public class ControleUsuarioSala {
 
     public boolean sairSala(UsuarioSala usuarioSala) {
         return repositorioUsuarioSala.remover(usuarioSala);
+    }
+
+    public boolean removerAlunosSala(Sala sala) {
+        return repositorioUsuarioSala.removerAlunosSala(sala);
     }
 }

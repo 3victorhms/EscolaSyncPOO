@@ -9,7 +9,7 @@ public class UsuarioGrupo {
         this.grupo = grupo;
     }
 
-    public UsuarioGrupo getInstance(Usuario usuario, Grupo grupo) {
+    public static UsuarioGrupo getInstance(Usuario usuario, Grupo grupo) {
         if (usuario == null || grupo == null) return null;
         return new UsuarioGrupo(usuario, grupo);
     }

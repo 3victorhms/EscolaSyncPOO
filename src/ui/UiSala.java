@@ -60,6 +60,24 @@ public class UiSala {
     }
 
     public void excluir() {
+        System.out.println("Insira o código da sala:");
+        int codigo = scn.nextInt();
+        scn.nextLine();
+        if (codigo <= 0)
+            System.out.println(">>> Código inválido!");
+        else if (sistema.excluirSala(codigo)) {
+            if (sistema.removerAlunosSala(codigo)) {
+                if (sistema.removerAtividadesSala(codigo)) {
+                    if (sistema.removerGruposSala(codigo)) {
+                        System.out.println("Sala excluída com sucesso!");
+                    } else System.out.println("Falha ao remover grupos da sala!");
+                }
+            }
+        } else
+            System.out.println("Sala não encontrada!");
+    }
+
+    public void atualizar(){
 
     }
 }

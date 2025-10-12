@@ -20,7 +20,7 @@ public class RepositorioSala {
         return salas.add(sala);
     }
 
-    public boolean remover(Sala sala) {
+    public boolean excluir(Sala sala) {
         return salas.remove(sala);
     }
 

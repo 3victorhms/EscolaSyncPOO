@@ -2,6 +2,7 @@ package controle;
 
 import dados.RepositorioAtividade;
 import modelo.Atividade;
+import modelo.Sala;
 
 import java.util.Date;
 

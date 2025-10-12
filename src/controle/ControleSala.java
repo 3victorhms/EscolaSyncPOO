@@ -14,8 +14,8 @@ public class ControleSala {
         return repositorioSala.adicionar(sala);
     }
 
-    protected boolean remover(Sala sala) {
-        return repositorioSala.remover(sala);
+    protected boolean excluir(Sala sala) {
+        return repositorioSala.excluir(sala);
     }
 
     public Sala buscarSala(int idSala) {
