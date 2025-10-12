@@ -11,10 +11,11 @@ public class Atividade {
     protected Date dataConclusao;
     protected String materia;
     protected double valor;
+    protected Sala sala;
 
     protected static int proxId = 1;
 
-    protected Atividade(String nome, String descricao, Date dataEntrega, Date dataConclusao, String materia, double valor) {
+    protected Atividade(String nome, String descricao, Date dataEntrega, Date dataConclusao, String materia, double valor, Sala sala) {
         this.id = proxId++;
         this.nome = nome;
         this.descricao = descricao;
@@ -22,10 +23,11 @@ public class Atividade {
         this.dataConclusao = dataConclusao;
         this.materia = materia;
         this.valor = valor;
+        this.sala = sala;
     }
 
-    public static Atividade getInstance(String nome, String descricao, Date dataEntrega, Date dataConclusao, String materia, double valor) {
-        return new Atividade(nome, descricao, dataEntrega, dataConclusao, materia, valor);
+    public static Atividade getInstance(String nome, String descricao, Date dataEntrega, Date dataConclusao, String materia, double valor, Sala sala) {
+        return new Atividade(nome, descricao, dataEntrega, dataConclusao, materia, valor, sala);
     }
 
     public int getId() {
@@ -78,5 +80,9 @@ public class Atividade {
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    public Sala getSala() {
+        return sala;
     }
 }

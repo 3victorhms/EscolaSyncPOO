@@ -6,6 +6,7 @@ import modelo.Sala;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -44,10 +45,12 @@ public class UiSala {
                     System.out.println("Insira o username do líder da sala: ");
                     String username = scn.nextLine();
                     if (username != null && !username.isEmpty())
-                        if (sistema.adicionarSala(Sala.getInstance(nome, descricao, data, sistema.buscarUsuario(username))))
-                            System.out.println(">>> Sala criada com sucesso!");
-                        else
-                            System.out.println(">>> Falha ao criar sala!");
+                        if (sistema.usuarioExiste(username)) {
+                            if (sistema.adicionarSala(Sala.getInstance(nome, descricao, data, sistema.buscarUsuario(username))))
+                                System.out.println(">>> Sala criada com sucesso!");
+                            else
+                                System.out.println(">>> Falha ao criar sala!");
+                        }
                 } else {
                     System.out.println(">>> Data inválida!");
                 }
@@ -65,19 +68,46 @@ public class UiSala {
         scn.nextLine();
         if (codigo <= 0)
             System.out.println(">>> Código inválido!");
-        else if (sistema.excluirSala(codigo)) {
-            if (sistema.removerAlunosSala(codigo)) {
-                if (sistema.removerAtividadesSala(codigo)) {
-                    if (sistema.removerGruposSala(codigo)) {
-                        System.out.println("Sala excluída com sucesso!");
-                    } else System.out.println("Falha ao remover grupos da sala!");
+        else if (sistema.salaExiste(codigo)) {
+            if (sistema.excluirSala(codigo)) {
+                if (sistema.removerAlunosSala(codigo)) {
+                    if (sistema.removerAtividadesSala(codigo)) {
+                        if (sistema.removerGruposSala(codigo)) {
+                            System.out.println("Sala excluída com sucesso!");
+                        } else System.out.println("Falha ao remover grupos da sala!");
+                    }
                 }
-            }
-        } else
-            System.out.println("Sala não encontrada!");
+            } else
+                System.out.println("Sala não encontrada!");
+        }
     }
 
-    public void atualizar(){
+    public void atualizar() {
+        System.out.println("Insira o código da sala:");
+        int codigo = scn.nextInt();
+        scn.nextLine();
+        if (codigo <= 0)
+            System.out.println(">>> Código inválido!");
+        else if (sistema.salaExiste(codigo)) {
+            System.out.println();
+        }
+    }
 
+    public void listar(List<Sala> salas) {
+        if (salas.isEmpty()) {
+            System.out.println("\nNenhuma sala encontrada.");
+            return;
+        }
+
+        System.out.println("\n=== Lista de Salas ===");
+        for (Sala sala : salas) {
+            System.out.println("-".repeat(40));
+            System.out.println("Código: " + sala.getId());
+            System.out.println("Nome: " + sala.getNome());
+            System.out.println("Descrição: " + sala.getDescricao());
+            System.out.println("Criada em: " + sdf.format(sala.getDataCriacao()));
+            System.out.println("Líder: " + sala.getLider().getUsername());
+        }
+        System.out.println("-".repeat(40));
     }
 }

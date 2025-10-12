@@ -1,6 +1,7 @@
 package dados;
 
 import modelo.Sala;
+import modelo.Usuario;
 import modelo.UsuarioSala;
 
 import java.util.ArrayList;
@@ -31,5 +32,23 @@ public class RepositorioUsuarioSala {
                 this.remover(usuarioSala);
         }
         return true;
+    }
+
+    public List<Sala> listarSalasDoUsuario(Usuario usuarioAtual) {
+        List<Sala> salas = new ArrayList<>();
+        for (UsuarioSala usuarioSala : this.getUsuarioSalas()){
+            if(usuarioSala.getUsuario().equals(usuarioAtual))
+                salas.add(usuarioSala.getSala());
+        }
+        return salas;
+    }
+
+    public List<Usuario> listarParticipantesSala(Sala sala) {
+        List<Usuario> participantes = new ArrayList<>();
+        for (UsuarioSala usuarioSala : this.getUsuarioSalas()){
+            if(usuarioSala.getSala().equals(sala))
+                participantes.add(usuarioSala.getUsuario());
+        }
+        return participantes;
     }
 }

@@ -40,4 +40,13 @@ public class RepositorioGrupo {
         }
         return true;
     }
+
+    public List<Grupo> listarGruposDaSala(Sala sala) {
+        List<Grupo> grupos = new ArrayList<>();
+        for (Grupo grupo : this.getGrupos()){
+            if(grupo.getSala().getId() == sala.getId())
+                grupos.add(grupo);
+        }
+        return grupos;   
+    }
 }

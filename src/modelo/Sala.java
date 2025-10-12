@@ -31,4 +31,16 @@ public class Sala {
     public String getNome() {
         return nome;
     }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Date getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public Usuario getLider() {
+        return lider;
+    }
 }

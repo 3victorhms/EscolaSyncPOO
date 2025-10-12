@@ -1,5 +1,6 @@
 package dados;
 
+import modelo.Atividade;
 import modelo.Sala;
 import modelo.SalaAtividade;
 
@@ -31,5 +32,14 @@ public class RepositorioSalaAtividade {
                 this.remover(salaAtividade);
         }
         return true;
+    }
+
+    public List<Atividade> listarAtividadesDaSala(Sala sala) {
+        List<Atividade> atividades = new ArrayList<>();
+        for (SalaAtividade salaAtividade : this.getSalasAtividades()){
+            if(salaAtividade.getSala().equals(sala))
+                atividades.add(salaAtividade.getAtividade());
+        }
+        return atividades;
     }
 }

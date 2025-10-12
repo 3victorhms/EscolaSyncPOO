@@ -1,7 +1,12 @@
 package ui;
 
 import controle.Sistema;
+import modelo.Atividade;
+import modelo.Sala;
+import modelo.Usuario;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Scanner;
 
 public class UiPrincipal {
@@ -14,134 +19,168 @@ public class UiPrincipal {
 
     public UiPrincipal() {
         uiUsuario = new UiUsuario();
+        uiSala = new UiSala();
+        uiGrupo = new UiGrupo();
+        uiAtividade = new UiAtividade();
     }
 
-    public void iniciar() {
+    public void telaInicial() {
+        limparTela();
         Sistema sistema = Sistema.getInstance();
+        System.out.println("=== EscolaSync ===");
 
-        int opcaoInicial = 0;
-        do {
-            opcaoInicial = menuInicial();
-            switch (opcaoInicial) {
+        if (sistema.getUsuarioAtual() == null) {
+            System.out.println("\n[1] Entrar");
+            System.out.println("[2] Criar conta");
+            System.out.println("[0] Sair");
+
+            int opcao = scn.nextInt();
+            scn.nextLine();
+
+            switch (opcao) {
+                case 1: uiUsuario.login(); break;
+                case 2: uiUsuario.cadastrar(); break;
+                case 0: break;
+            }
+        } else {
+            mostrarCabecalho();
+
+            System.out.println("\n=== Minhas Salas ===");
+            List<Sala> salas = sistema.listarSalasDoUsuario();
+
+            System.out.println("\nO que deseja fazer?");
+            System.out.println("[1] Ver sala");
+            System.out.println("[2] Entrar em sala");
+            System.out.println("[3] Criar sala");
+            System.out.println("[4] Meu perfil");
+            System.out.println("[0] Sair");
+
+            int opcao = scn.nextInt();
+            scn.nextLine();
+
+            switch (opcao) {
                 case 1:
-                    uiUsuario.login();
+                    System.out.print("Digite o código da sala: ");
+                    int codigoSala = scn.nextInt();
+                    this.telaSala(codigoSala);
                     break;
+                case 2: uiUsuario.entrarSala(); break;
+                case 3: uiSala.adicionar(); break;
+                case 4: uiUsuario.telaPerfil(); break;
+                case 0: uiUsuario.logout(); telaInicial(); break;
+            }
+        }
+    }
+
+    public void telaSala(int codigoSala) {
+        limparTela();
+        Sistema sistema = Sistema.getInstance();
+        Sala sala = sistema.buscarSala(codigoSala);
+        if (sala == null) {
+            System.out.println("Sala não encontrada!");
+            return;
+        }
+
+        while (true) {
+            System.out.println("\n=== Sala: " + sala.getNome() + " ===");
+            System.out.println("Código: " + sala.getId());
+
+            System.out.println("\n=== Grupos ===");
+            sistema.listarGruposDaSala(codigoSala);
+
+            System.out.println("\n=== Atividades ===");
+            sistema.listarAtividadesDaSala(codigoSala);
+
+            System.out.println("\nO que deseja fazer?");
+            System.out.println("[1] Criar grupo");
+            System.out.println("[2] Entrar em grupo");
+            System.out.println("[3] Criar atividade");
+            System.out.println("[4] Ver atividade");
+            System.out.println("[5] Ver participantes");
+            System.out.println("[6] Ver grupo");
+            System.out.println("[0] Voltar");
+
+            int opcao = scn.nextInt();
+            scn.nextLine();
+
+            switch (opcao) {
+                case 1: uiGrupo.adicionar(sala, sistema.getUsuarioAtual()); break;
+                case 2: uiGrupo.entrar(); break;
+                case 3: uiAtividade.adicionar(sala); break;
+                case 4:
+                    System.out.print("Digite o ID da atividade: ");
+                    int idAtividade = scn.nextInt();
+                    telaAtividade(idAtividade);
+                    break;
+                case 5: sistema.listarParticipantesSala(codigoSala); break;
+                case 0: return;
+            }
+        }
+    }
+
+    private void mostrarCabecalho() {
+        Sistema sistema = Sistema.getInstance();
+        Usuario atual = sistema.getUsuarioAtual();
+        System.out.println("\nBem-vindo(a), " + atual.getUsername() + "!");
+    }
+
+    private void limparTela() {
+        System.out.println("\n\n");
+        System.out.println("=".repeat(50));
+        System.out.println("\n");
+    }
+    public void telaAtividade(int idAtividade) {
+        limparTela();
+        Sistema sistema = Sistema.getInstance();
+        Atividade atividade = sistema.buscarAtividade(idAtividade);
+        
+        if (atividade == null) {
+            System.out.println("Atividade não encontrada!");
+            return;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        while (true) {
+            System.out.println("\n=== Atividade: " + atividade.getNome() + " ===");
+            System.out.println("ID: " + atividade.getId());
+            System.out.println("Descrição: " + atividade.getDescricao());
+            System.out.println("Data de Entrega: " + sdf.format(atividade.getDataEntrega()));
+            System.out.println("Matéria: " + atividade.getMateria());
+            System.out.println("Valor: " + atividade.getValor());
+
+            System.out.println("\nO que deseja fazer?");
+            System.out.println("[1] Adicionar atividade à minha lista");
+            System.out.println("[2] Atualizar atividade");
+            System.out.println("[3] Excluir atividade");
+            System.out.println("[0] Voltar");
+
+            int opcao = scn.nextInt();
+            scn.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    uiUsuario.adicionarAtividade(atividade);
+                    break;
+
                 case 2:
-                    uiUsuario.cadastrar();
+                    uiAtividade.atualizar();
                     break;
                 case 3:
-                    break;
-                default:
-                    System.out.println("Opção inválida!");
-                    break;
-            }
-        } while (opcaoInicial != 3);
-
-        int opcaoPrincipal = 0;
-        do {
-            opcaoPrincipal = menuPrincipal();
-            switch (opcaoPrincipal) {
-                case 1:
-                    int opcaoAdicionar = 0;
-                    opcaoAdicionar = menuAdicionar();
-                    switch (opcaoAdicionar) {
-                        case 1:
-                            uiSala.adicionar();
-                            break;
-                        case 2:
-                            uiUsuario.entrarSala();
-                            break;
-                        case 3:
-                            uiGrupo.adicionar();
-                            break;
-                        case 4:
-                            uiUsuario.entrarGrupo();
-                            break;
-                        case 5:
-                            uiAtividade.adicionar();
-                            break;
-                        case 6:
-                            uiUsuario.atribuirAtividade();
-                            break;
-                        case 7:
-                            break;
+                    System.out.println("Tem certeza que deseja excluir esta atividade? (S/N)");
+                    String confirmacao = scn.nextLine();
+                    if (confirmacao.equalsIgnoreCase("S")) {
+                        if (sistema.excluirAtividade(idAtividade)) {
+                            System.out.println("Atividade excluída com sucesso!");
+                            return;
+                        } else {
+                            System.out.println("Erro ao excluir atividade!");
+                        }
                     }
                     break;
-                case 2:
-                    int opcaoExcluir = 0;
-                    opcaoExcluir = menuExcluir();
-                    switch (opcaoExcluir) {
-                        case 1:
-                            uiSala.excluir();
-                        case 2:
-                            uiUsuario.sairSala();
-                            break;
-                        case 3:
-                            uiGrupo.excluir();
-                            break;
-                        case 4:
-                            uiUsuario.sairGrupo();
-                            break;
-                        case 5:
-                            uiAtividade.excluir();
-                            break;
-                        case 6:
-                            uiUsuario.removerAtribuicao();
-                            break;
-                        case 7:
-                            break;
-                    } case 3:
-
+                case 0:
+                    return;
             }
-        } while (opcaoPrincipal != 7);
-
-    }
-
-    public int menuInicial() {
-        System.out.println("===\n EscolaSync ===\n");
-        System.out.println("1. Login");
-        System.out.println("2. Cadastrar");
-        System.out.println("3. Sair");
-        System.out.print("Escolha uma opção: ");
-        return scn.nextInt();
-    }
-
-    public int menuPrincipal() {
-        System.out.println("===\n EscolaSync ===\n");
-        System.out.println("1. Adicionar");
-        System.out.println("2. Excluir");
-        System.out.println("3. Buscar");
-        System.out.println("4. Listar");
-        System.out.println("5. Alterar");
-        System.out.println("6. Encerrar sessão");
-        System.out.println("7. Encerrar programa");
-        System.out.print("Escolha uma opção: ");
-        return scn.nextInt();
-    }
-
-    public int menuAdicionar() {
-        System.out.println("===\n EscolaSync ===\n");
-        System.out.println("1. Criar sala");
-        System.out.println("2. Entrar em sala");
-        System.out.println("3. Criar grupo");
-        System.out.println("4. Entrar em grupo");
-        System.out.println("5. Criar atividade");
-        System.out.println("6. Atribuir atividade");
-        System.out.println("7. Voltar");
-        System.out.print("Escolha uma opção: ");
-        return scn.nextInt();
-    }
-
-    public int menuExcluir() {
-        System.out.println("===\n EscolaSync ===\n");
-        System.out.println("1. Excluir Sala");
-        System.out.println("2. Sair de sala");
-        System.out.println("3. Excluir Grupo");
-        System.out.println("4. Sair de grupo");
-        System.out.println("5. Excluir Atividade");
-        System.out.println("6. Remover atribuição");
-        System.out.println("7. Voltar");
-        System.out.print("Escolha uma opção: ");
-        return scn.nextInt();
+        }
     }
 }

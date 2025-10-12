@@ -11,7 +11,7 @@ public class UsuarioAtividade {
         this.status = "Pendente";
     }
 
-    public UsuarioAtividade getInstance(Usuario usuario, Atividade atividade) {
+    public static UsuarioAtividade getInstance(Usuario usuario, Atividade atividade) {
         if (usuario == null || atividade == null) return null;
         return new UsuarioAtividade(usuario, atividade);
     }

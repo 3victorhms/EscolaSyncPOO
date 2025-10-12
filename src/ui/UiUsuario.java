@@ -1,7 +1,9 @@
 package ui;
 
 import controle.Sistema;
+import modelo.Atividade;
 import modelo.Grupo;
+import modelo.Sala;
 import modelo.Usuario;
 
 import java.util.Random;
@@ -27,6 +29,14 @@ public class UiUsuario {
             System.out.println("Login efetuado com sucesso!");
         } else {
             System.out.println("Login falhou!");
+        }
+    }
+
+    public void logout() {
+        if (sistema.logout()) {
+            System.out.println("Logout efetuado com sucesso!");
+        } else {
+            System.out.println("Erro ao fazer logout!");
         }
     }
 
@@ -60,7 +70,7 @@ public class UiUsuario {
         if (codigo > 0) {
             Grupo g = sistema.buscarGrupo(codigo);
             if (g != null) {
-                if (sistema.entrarGrupo(g)) {
+                if (sistema.entrarGrupo(g.getId())) {
                     System.out.println("Grupo acessado com sucesso!");
                 } else {
                     System.out.println("Erro ao acessar grupo!");
@@ -71,18 +81,44 @@ public class UiUsuario {
         }
     }
 
-    public void atribuirAtividade() {
-    }
-
-    public void removerAtribuicao() {
-    }
-
     public void sairSala() {
-        
+        System.out.println("Insira o código da sala para sair:");
+        int codigo = scn.nextInt();
+        scn.nextLine();
+        if (codigo > 0) {
+            Sala s = sistema.buscarSala(codigo);
+            if (s != null) {
+                if (sistema.sairSala(codigo)) {
+                    if (sistema.removerAtividadesDeAlunoDaSala(codigo)) {
+                        if (sistema.removerAlunoDeGrupoDaSala(codigo))
+                            System.out.println("Saiu da sala com sucesso!");
+                    }
+                }
+                } else {
+                    System.out.println("Erro ao sair da sala!");
+                }
+            } else {
+                System.out.println("Código inválido!");
+            }
+        }
+
+        public void sairGrupo () {
+        }
+
+
+    public void telaPerfil() {
+        System.out.println(sistema.getUsuarioAtual().toString());
     }
 
-    public void sairGrupo() {
+    public void adicionarAtividade(Atividade atividade) {
+        if (sistema.adicionarAtividadeParaAluno(atividade, sistema.getUsuarioAtual())) {
+            System.out.println("Atividade adicionada com sucesso!");
+        } else {
+            System.out.println("Erro ao adicionar atividade!");
+        }
     }
 
+    public void removerAtividade(Atividade atividade) {
 
+    }
 }

@@ -2,6 +2,8 @@ package controle;
 
 import modelo.*;
 
+import java.util.List;
+
 public class Sistema {
     protected ControleUsuario controleUsuario;
     protected ControleSala controleSala;
@@ -26,9 +28,8 @@ public class Sistema {
 
     public static Sistema getInstance() {
         if (instance == null)
-            return new Sistema();
-        else
-            return instance;
+            instance = new Sistema();
+        return instance;
     }
 
     public boolean login(Usuario usuario) {
@@ -37,6 +38,10 @@ public class Sistema {
 
     public boolean cadastrar(Usuario usuario) {
         return controleUsuario.cadastrar(usuario);
+    }
+
+    public Usuario getUsuarioAtual(){
+        return controleUsuario.getUsuarioAtual();
     }
 
     public Usuario buscarUsuario(String username){
@@ -65,6 +70,10 @@ public class Sistema {
 
     public boolean entrarSala(int idSala) {
         return controleUsuarioSala.entrarSala(UsuarioSala.getInstance(controleUsuario.getUsuarioAtual(), controleSala.buscarSala(idSala)));
+    }
+
+    public boolean sairSala(int idSala) {
+        return controleUsuarioSala.sairSala(UsuarioSala.getInstance(controleUsuario.getUsuarioAtual(), controleSala.buscarSala(idSala)));
     }
 
     public boolean adicionarAtividade(Atividade atividade) {
@@ -103,12 +112,59 @@ public class Sistema {
         return controleAtividade.alterarValor(codigo, valor);
     }
 
+    public boolean adicionarGrupo(Grupo grupo) {
+        return controleGrupo.adicionar(grupo);
+    }
 
-    public boolean entrarGrupo(Grupo grupo) {
-        return controleUsuarioGrupo.entrarGrupo(this.controleUsuario.getUsuarioAtual(), grupo);
+    public boolean entrarGrupo(int idGrupo) {
+        return controleUsuarioGrupo.entrarGrupo(this.getUsuarioAtual(), this.buscarGrupo(idGrupo));
     }
 
     public Grupo buscarGrupo(int codigo) {
         return controleGrupo.buscarGrupo(codigo);
+    }
+
+    public Sala buscarSala(int codigo) {
+        return controleSala.buscarSala(codigo);
+    }
+
+    public boolean removerAtividadesDeAlunoDaSala(int idSala) {
+        return controleUsuarioAtividade.removerAtividadesDeAlunoDaSala(idSala, this.getUsuarioAtual().getUsername());
+    }
+
+    public boolean removerAlunoDeGrupoDaSala(int idSala) {
+        return controleUsuarioGrupo.removerAlunoDeGrupoDaSala(controleSala.buscarSala(idSala));
+    }
+
+    public boolean usuarioExiste(String username) {
+        return controleUsuario.buscarUsuario(username) != null;
+    }
+
+    public boolean salaExiste(int codigo) {
+        return controleSala.buscarSala(codigo) != null;
+    }
+
+    public List<Sala> listarSalasDoUsuario() {
+        return controleUsuarioSala.listarSalasDoUsuario(this.getUsuarioAtual());
+    }
+
+    public List<Grupo>  listarGruposDaSala(int codigoSala) {
+        return controleGrupo.listarGruposDaSala(controleSala.buscarSala(codigoSala));
+    }
+
+    public List<Atividade> listarAtividadesDaSala(int codigoSala) {
+        return controleSalaAtividade.listarAtividadesDaSala(controleSala.buscarSala(codigoSala));
+    }
+
+    public boolean logout() {
+        return controleUsuario.logout();
+    }
+
+    public List<Usuario> listarParticipantesSala(int codigoSala) {
+        return controleUsuarioSala.listarParticipantesSala(controleSala.buscarSala(codigoSala));
+    }
+
+    public boolean adicionarAtividadeParaAluno(Atividade atividade, Usuario usuarioAtual) {
+        return controleUsuarioAtividade.adicionar(UsuarioAtividade.getInstance(usuarioAtual, atividade));
     }
 }

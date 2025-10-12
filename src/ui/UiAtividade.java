@@ -2,6 +2,7 @@ package ui;
 
 import controle.Sistema;
 import modelo.Atividade;
+import modelo.Sala;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +23,7 @@ public class UiAtividade {
         sdf = new SimpleDateFormat("dd/MM/yyyy");
     }
 
-    public void adicionar() {
+    public void adicionar(Sala sala) {
         System.out.println("Insira o nome da atividade:");
         String nome = scn.nextLine();
         if (nome != null && !nome.isEmpty()) {
@@ -45,7 +46,7 @@ public class UiAtividade {
                         System.out.println("Insira o valor da atividade:");
                         double valor = scn.nextDouble();
                         if (valor > 0) {
-                            sistema.adicionarAtividade(Atividade.getInstance(nome, descricao, dataEntrega, null, materia, valor));
+                            sistema.adicionarAtividade(Atividade.getInstance(nome, descricao, dataEntrega, null, materia, valor, sistema.buscarSala(sala.getId())));
                         }
                     }
                 }

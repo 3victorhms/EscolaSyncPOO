@@ -4,6 +4,8 @@ import dados.RepositorioGrupo;
 import modelo.Grupo;
 import modelo.Sala;
 
+import java.util.List;
+
 public class ControleGrupo {
     protected RepositorioGrupo repositorioGrupo;
 
@@ -25,5 +27,9 @@ public class ControleGrupo {
 
     protected Grupo buscarGrupo(int codigo){
         return repositorioGrupo.buscarGrupo(codigo);
+    }
+
+    public List<Grupo> listarGruposDaSala(Sala sala) {
+        return repositorioGrupo.listarGruposDaSala(sala);
     }
 }

@@ -1,6 +1,8 @@
 package controle;
 
 import dados.RepositorioUsuarioAtividade;
+import modelo.Atividade;
+import modelo.Usuario;
 import modelo.UsuarioAtividade;
 
 public class ControleUsuarioAtividade {
@@ -10,11 +12,15 @@ public class ControleUsuarioAtividade {
         repositorioUsuarioAtividade = new RepositorioUsuarioAtividade();
     }
 
-    public boolean atribuir(UsuarioAtividade usuarioAtividade) {
-        return repositorioUsuarioAtividade.atribuir(usuarioAtividade);
+    public boolean adicionar(UsuarioAtividade usuarioAtividade) {
+        return repositorioUsuarioAtividade.adcionar(usuarioAtividade);
     }
 
     public boolean remover(UsuarioAtividade usuarioAtividade) {
         return repositorioUsuarioAtividade.remover(usuarioAtividade);
+    }
+
+    public boolean removerAtividadesDeAlunoDaSala(int idSala, String username) {
+        return repositorioUsuarioAtividade.removerAtividadesDeAlunoDaSala(idSala, username);
     }
 }
