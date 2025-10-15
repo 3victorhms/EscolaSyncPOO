@@ -6,6 +6,7 @@ import modelo.Grupo;
 import modelo.Sala;
 import modelo.Usuario;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -63,7 +64,7 @@ public class UiUsuario {
         }
     }
 
-    public void entrarGrupo() {
+    public void entrarGrupo(int codigoSala) {
         System.out.println("Insira o código do grupo: ");
         int codigo = scn.nextInt();
         scn.nextLine();
@@ -94,16 +95,16 @@ public class UiUsuario {
                             System.out.println("Saiu da sala com sucesso!");
                     }
                 }
-                } else {
-                    System.out.println("Erro ao sair da sala!");
-                }
             } else {
-                System.out.println("Código inválido!");
+                System.out.println("Erro ao sair da sala!");
             }
+        } else {
+            System.out.println("Código inválido!");
         }
+    }
 
-        public void sairGrupo () {
-        }
+    public void sairGrupo() {
+    }
 
 
     public void telaPerfil() {
@@ -119,6 +120,17 @@ public class UiUsuario {
     }
 
     public void removerAtividade(Atividade atividade) {
+        if (sistema.removerAtividadeParaAluno(atividade, sistema.getUsuarioAtual())) {
+            System.out.println("Atividade removida com sucesso!");
+        } else {
+            System.out.println("Erro ao remover atividade!");
+        }
 
+    }
+
+    public void listarUsuarios(List<Usuario> usuarios) {
+        for (Usuario u : usuarios) {
+            System.out.println(u.toString());
+        }
     }
 }

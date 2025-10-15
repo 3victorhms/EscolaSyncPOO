@@ -19,7 +19,17 @@ public class RepositorioUsuarioSala {
     }
 
     public boolean adicionar(UsuarioSala usuarioSala) {
-        return usuarioSalas.add(usuarioSala);
+        if (!usuarioEstaNaSala(usuarioSala.getUsuario(), usuarioSala.getSala()))
+            return usuarioSalas.add(usuarioSala);
+        return false;
+    }
+
+    public boolean usuarioEstaNaSala(Usuario usuario, Sala sala) {
+        for (UsuarioSala usuarioSala : this.getUsuarioSalas()) {
+            if (usuarioSala.getUsuario().getUsername().equals(usuario.getUsername()) && usuarioSala.getSala().equals(sala))
+                return true;
+        }
+        return false;
     }
 
     public boolean remover(UsuarioSala usuarioSala) {
@@ -27,8 +37,8 @@ public class RepositorioUsuarioSala {
     }
 
     public boolean removerAlunosSala(Sala sala) {
-        for (UsuarioSala usuarioSala : this.getUsuarioSalas()){
-            if(usuarioSala.getSala().equals(sala))
+        for (UsuarioSala usuarioSala : this.getUsuarioSalas()) {
+            if (usuarioSala.getSala().equals(sala))
                 this.remover(usuarioSala);
         }
         return true;
@@ -36,8 +46,8 @@ public class RepositorioUsuarioSala {
 
     public List<Sala> listarSalasDoUsuario(Usuario usuarioAtual) {
         List<Sala> salas = new ArrayList<>();
-        for (UsuarioSala usuarioSala : this.getUsuarioSalas()){
-            if(usuarioSala.getUsuario().equals(usuarioAtual))
+        for (UsuarioSala usuarioSala : this.getUsuarioSalas()) {
+            if (usuarioSala != null && usuarioSala.getUsuario().equals(usuarioAtual))
                 salas.add(usuarioSala.getSala());
         }
         return salas;
@@ -45,8 +55,8 @@ public class RepositorioUsuarioSala {
 
     public List<Usuario> listarParticipantesSala(Sala sala) {
         List<Usuario> participantes = new ArrayList<>();
-        for (UsuarioSala usuarioSala : this.getUsuarioSalas()){
-            if(usuarioSala.getSala().equals(sala))
+        for (UsuarioSala usuarioSala : this.getUsuarioSalas()) {
+            if (usuarioSala.getSala().equals(sala))
                 participantes.add(usuarioSala.getUsuario());
         }
         return participantes;

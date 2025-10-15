@@ -21,7 +21,14 @@ public class RepositorioUsuarioGrupo {
 
     public boolean entrarGrupo(Usuario usuario, Grupo grupo) {
         return usuarioGrupos.add(UsuarioGrupo.getInstance(usuario, grupo));
+    }
 
+    public boolean sairGrupo(Usuario usuarioAtual, Grupo grupo) {
+        for (UsuarioGrupo usuarioGrupo : this.getUsuarioGrupos()){
+            if (usuarioGrupo.getUsuario().equals(usuarioAtual) && usuarioGrupo.getGrupo().equals(grupo))
+                this.usuarioGrupos.remove(usuarioGrupo);
+        }
+        return true;
     }
 
     public boolean removerAlunoDeGrupoDaSala(Sala sala) {
@@ -30,5 +37,22 @@ public class RepositorioUsuarioGrupo {
                 this.usuarioGrupos.remove(usuarioGrupo);
         }
         return true;
+    }
+
+    public List<Usuario> listarParticipantesGrupo(Grupo grupo) {
+        List<Usuario> participantes = new ArrayList<>();
+        for (UsuarioGrupo usuarioGrupo : this.getUsuarioGrupos()) {
+            if (usuarioGrupo.getGrupo().equals(grupo))
+                participantes.add(usuarioGrupo.getUsuario());
+        }
+        return participantes;
+    }
+
+    public boolean usuarioEstaNoGrupo(Usuario usuarioAtual, Grupo grupo) {
+        for (UsuarioGrupo usuarioGrupo : this.getUsuarioGrupos()) {
+            if (usuarioGrupo.getUsuario().equals(usuarioAtual) && usuarioGrupo.getGrupo().equals(grupo))
+                return true;
+        }
+        return false;
     }
 }

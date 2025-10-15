@@ -41,16 +41,12 @@ public class UiSala {
                         System.out.println(">>> Data inválida!");
                         return;
                     }
-
-                    System.out.println("Insira o username do líder da sala: ");
-                    String username = scn.nextLine();
-                    if (username != null && !username.isEmpty())
-                        if (sistema.usuarioExiste(username)) {
-                            if (sistema.adicionarSala(Sala.getInstance(nome, descricao, data, sistema.buscarUsuario(username))))
-                                System.out.println(">>> Sala criada com sucesso!");
-                            else
-                                System.out.println(">>> Falha ao criar sala!");
-                        }
+                    Sala sala = Sala.getInstance(nome, descricao, data, sistema.buscarUsuario(sistema.getUsuarioAtual().getUsername()));
+                    if (sistema.adicionarSala(sala))
+                        if (sistema.entrarSala(sala.getId()))
+                            System.out.println(">>> Sala criada com sucesso!");
+                        else
+                            System.out.println(">>> Falha ao criar sala!");
                 } else {
                     System.out.println(">>> Data inválida!");
                 }
@@ -58,7 +54,7 @@ public class UiSala {
                 System.out.println(">>> Descrição inválida!");
             }
         } else {
-            System.out.println(">>> Username inválido!");
+            System.out.println(">>> Nome inválido!");
         }
     }
 

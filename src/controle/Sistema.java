@@ -24,6 +24,7 @@ public class Sistema {
         controleUsuarioAtividade = new ControleUsuarioAtividade();
         controleUsuarioGrupo = new ControleUsuarioGrupo();
         controleGrupo = new ControleGrupo();
+        controleSalaAtividade = new ControleSalaAtividade();
     }
 
     public static Sistema getInstance() {
@@ -116,12 +117,16 @@ public class Sistema {
         return controleGrupo.adicionar(grupo);
     }
 
-    public boolean entrarGrupo(int idGrupo) {
-        return controleUsuarioGrupo.entrarGrupo(this.getUsuarioAtual(), this.buscarGrupo(idGrupo));
+    public boolean entrarGrupo(int codigoGrupo) {
+        return controleUsuarioGrupo.entrarGrupo(this.getUsuarioAtual(), this.buscarGrupo(codigoGrupo));
     }
 
-    public Grupo buscarGrupo(int codigo) {
-        return controleGrupo.buscarGrupo(codigo);
+    public boolean sairGrupo(int codigoGrupo) {
+        return controleUsuarioGrupo.sairGrupo(this.getUsuarioAtual(), this.buscarGrupo(codigoGrupo));
+    }
+
+    public Grupo buscarGrupo(int codigoGrupo) {
+        return controleGrupo.buscarGrupo(codigoGrupo);
     }
 
     public Sala buscarSala(int codigo) {
@@ -166,5 +171,33 @@ public class Sistema {
 
     public boolean adicionarAtividadeParaAluno(Atividade atividade, Usuario usuarioAtual) {
         return controleUsuarioAtividade.adicionar(UsuarioAtividade.getInstance(usuarioAtual, atividade));
+    }
+
+    public List<Usuario> listarParticipantesGrupo(int codigoGrupo){
+        return controleUsuarioGrupo.listarParticipantesGrupo(controleGrupo.buscarGrupo(codigoGrupo));
+    }
+
+    public boolean excluirGrupo(int codigo) {
+        return controleGrupo.excluir(controleGrupo.buscarGrupo(codigo));
+    }
+
+    public boolean atualizarNomeGrupo(int codigo, String nome) {
+        return controleGrupo.alterarNome(codigo, nome);
+    }
+
+    public boolean atualizarLiderGrupo(int codigo, String lider) {
+        return controleGrupo.alterarLider(codigo, this.buscarUsuario(lider));
+    }
+
+    public boolean removerAtividadeParaAluno(Atividade atividade, Usuario usuarioAtual) {
+        return controleUsuarioAtividade.remover(UsuarioAtividade.getInstance(usuarioAtual, atividade));
+    }
+
+    public boolean grupoExiste(int codigo) {
+        return controleGrupo.buscarGrupo(codigo) != null;
+    }
+
+    public boolean usuarioEstaNoGrupo(int codigo) {
+        return controleUsuarioGrupo.usuarioEstaNoGrupo(this.getUsuarioAtual(), this.buscarGrupo(codigo));
     }
 }

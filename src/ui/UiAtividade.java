@@ -7,6 +7,7 @@ import modelo.Sala;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -162,4 +163,9 @@ public class UiAtividade {
         }
     }
 
+    public void listarAtividades(List<Atividade> a) {
+        for (Atividade atividade : a) {
+            System.out.println(atividade.toString());
+        }
+    }
 }

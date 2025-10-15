@@ -2,6 +2,7 @@ package ui;
 
 import controle.Sistema;
 import modelo.Atividade;
+import modelo.Grupo;
 import modelo.Sala;
 import modelo.Usuario;
 
@@ -25,49 +26,20 @@ public class UiPrincipal {
     }
 
     public void telaInicial() {
-        limparTela();
         Sistema sistema = Sistema.getInstance();
-        System.out.println("=== EscolaSync ===");
 
-        if (sistema.getUsuarioAtual() == null) {
-            System.out.println("\n[1] Entrar");
-            System.out.println("[2] Criar conta");
-            System.out.println("[0] Sair");
+        while (true) {
+            limparTela();
+            System.out.println("=== EscolaSync ===");
 
-            int opcao = scn.nextInt();
-            scn.nextLine();
-
-            switch (opcao) {
-                case 1: uiUsuario.login(); break;
-                case 2: uiUsuario.cadastrar(); break;
-                case 0: break;
-            }
-        } else {
-            mostrarCabecalho();
-
-            System.out.println("\n=== Minhas Salas ===");
-            List<Sala> salas = sistema.listarSalasDoUsuario();
-
-            System.out.println("\nO que deseja fazer?");
-            System.out.println("[1] Ver sala");
-            System.out.println("[2] Entrar em sala");
-            System.out.println("[3] Criar sala");
-            System.out.println("[4] Meu perfil");
-            System.out.println("[0] Sair");
-
-            int opcao = scn.nextInt();
-            scn.nextLine();
-
-            switch (opcao) {
-                case 1:
-                    System.out.print("Digite o código da sala: ");
-                    int codigoSala = scn.nextInt();
-                    this.telaSala(codigoSala);
-                    break;
-                case 2: uiUsuario.entrarSala(); break;
-                case 3: uiSala.adicionar(); break;
-                case 4: uiUsuario.telaPerfil(); break;
-                case 0: uiUsuario.logout(); telaInicial(); break;
+            if (sistema.getUsuarioAtual() == null) {
+                if (!mostrarTelaLogin()) {
+                    return;
+                }
+            } else {
+                if (!mostrarTelaPrincipal()) {
+                    continue;
+                }
             }
         }
     }
@@ -86,10 +58,12 @@ public class UiPrincipal {
             System.out.println("Código: " + sala.getId());
 
             System.out.println("\n=== Grupos ===");
-            sistema.listarGruposDaSala(codigoSala);
+            List<Grupo > g = sistema.listarGruposDaSala(codigoSala);
+            uiGrupo.listarGrupos(g);
 
             System.out.println("\n=== Atividades ===");
-            sistema.listarAtividadesDaSala(codigoSala);
+            List<Atividade> a = sistema.listarAtividadesDaSala(codigoSala);
+            uiAtividade.listarAtividades(a);
 
             System.out.println("\nO que deseja fazer?");
             System.out.println("[1] Criar grupo");
@@ -104,18 +78,137 @@ public class UiPrincipal {
             scn.nextLine();
 
             switch (opcao) {
-                case 1: uiGrupo.adicionar(sala, sistema.getUsuarioAtual()); break;
-                case 2: uiGrupo.entrar(); break;
-                case 3: uiAtividade.adicionar(sala); break;
+                case 1:
+                    uiGrupo.adicionar(sala, sistema.getUsuarioAtual());
+                    break;
+                case 2:
+                    uiGrupo.entrar();
+                    break;
+                case 3:
+                    uiAtividade.adicionar(sala);
+                    break;
                 case 4:
-                    System.out.print("Digite o ID da atividade: ");
+                    System.out.print("Digite o código da atividade: ");
                     int idAtividade = scn.nextInt();
                     telaAtividade(idAtividade);
                     break;
-                case 5: sistema.listarParticipantesSala(codigoSala); break;
-                case 0: return;
+                case 5:
+                    uiUsuario.listarUsuarios(sistema.listarParticipantesSala(codigoSala));
+                    break;
+                case 6:
+                    System.out.print("Digite o código do grupo: ");
+                    int codigoGrupo = scn.nextInt();
+                    telaGrupo(codigoGrupo);
+                case 0:
+                    return;
             }
         }
+    }
+
+    private void telaGrupo(int codigoGrupo) {
+        limparTela();
+        Sistema sistema = Sistema.getInstance();
+        Grupo g = sistema.buscarGrupo(codigoGrupo);
+        System.out.println("\n=== Grupo: " + g.getNome() + " ===");
+        System.out.println("Código: " + g.getId());
+        System.out.println("Sala: " + g.getSala().getNome());
+        System.out.println("Líder: " + g.getLider().getUsername());
+
+        List<Usuario> u = sistema.listarParticipantesGrupo(codigoGrupo);
+        uiUsuario.listarUsuarios(u);
+
+        System.out.println("\nO que deseja fazer?");
+        System.out.println("[1] Adicionar atividade à membro");
+        System.out.println("[2] Atualizar grupo");
+        System.out.println("[3] Excluir grupo");
+        System.out.println("[4] Sair do grupo");
+        System.out.println("[0] Voltar");
+
+        int opcao = scn.nextInt();
+        scn.nextLine();
+
+        switch (opcao) {
+            case 1:
+                uiAtividade.adicionar(g.getSala());
+                break;
+            case 2:
+                uiGrupo.atualizar(g.getId());
+                break;
+            case 3:
+                uiGrupo.excluir(g.getId());
+            case 4:
+                uiGrupo.sair(g.getId());
+                break;
+            case 0:
+        }
+
+    }
+
+    private boolean mostrarTelaLogin() {
+        System.out.println("\n[1] Entrar");
+        System.out.println("[2] Criar conta");
+        System.out.println("[0] Sair");
+
+        System.out.println("\nO que deseja fazer?");
+
+        int opcao = scn.nextInt();
+        scn.nextLine();
+
+        switch (opcao) {
+            case 1:
+                uiUsuario.login();
+                return true;
+            case 2:
+                uiUsuario.cadastrar();
+                return true;
+            case 0:
+                return false;
+        }
+        return true;
+    }
+
+    private boolean mostrarTelaPrincipal() {
+        Sistema sistema = Sistema.getInstance();
+        mostrarCabecalho();
+
+        System.out.println("\n=== Minhas Salas ===");
+        List<Sala> salas = sistema.listarSalasDoUsuario();
+        uiSala.listar(salas);
+
+        System.out.println("\nO que deseja fazer?");
+        System.out.println("[1] Ver sala");
+        System.out.println("[2] Entrar em sala");
+        System.out.println("[3] Criar sala");
+        System.out.println("[4] Meu perfil");
+        System.out.println("[0] Sair");
+
+        System.out.println("\nO que deseja fazer?");
+
+
+        int opcao = scn.nextInt();
+        scn.nextLine();
+
+        switch (opcao) {
+            case 0:
+                uiUsuario.logout();
+                return false;
+            case 1:
+                System.out.print("Digite o código da sala: ");
+                int codigoSala = scn.nextInt();
+                telaSala(codigoSala);
+                return true;
+            case 2:
+                uiUsuario.entrarSala();
+                return true;
+            case 3:
+                uiSala.adicionar();
+                return true;
+            case 4:
+                uiUsuario.telaPerfil();
+                return true;
+
+        }
+        return true;
     }
 
     private void mostrarCabecalho() {
@@ -129,11 +222,12 @@ public class UiPrincipal {
         System.out.println("=".repeat(50));
         System.out.println("\n");
     }
+
     public void telaAtividade(int idAtividade) {
         limparTela();
         Sistema sistema = Sistema.getInstance();
         Atividade atividade = sistema.buscarAtividade(idAtividade);
-        
+
         if (atividade == null) {
             System.out.println("Atividade não encontrada!");
             return;
@@ -143,7 +237,7 @@ public class UiPrincipal {
 
         while (true) {
             System.out.println("\n=== Atividade: " + atividade.getNome() + " ===");
-            System.out.println("ID: " + atividade.getId());
+            System.out.println("Código: " + atividade.getId());
             System.out.println("Descrição: " + atividade.getDescricao());
             System.out.println("Data de Entrega: " + sdf.format(atividade.getDataEntrega()));
             System.out.println("Matéria: " + atividade.getMateria());

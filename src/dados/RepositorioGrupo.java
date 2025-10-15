@@ -2,6 +2,7 @@ package dados;
 
 import modelo.Grupo;
 import modelo.Sala;
+import modelo.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +22,13 @@ public class RepositorioGrupo {
         return this.getGrupos().add(grupo);
     }
 
-    public boolean remover(Grupo grupo) {
+    public boolean excluir(Grupo grupo) {
         return this.getGrupos().remove(grupo);
     }
 
-    public Grupo buscarGrupo(int codigo){
+    public Grupo buscarGrupo(int codigoGrupo){
         for(Grupo grupo : this.getGrupos()){
-            if (grupo.getId() == codigo)
+            if (grupo.getId() == codigoGrupo)
                 return grupo;
         }
         return null;
@@ -36,7 +37,7 @@ public class RepositorioGrupo {
     public boolean removerGruposSala(Sala sala) {
         for (Grupo grupo : this.getGrupos()){
             if(grupo.getSala().getId() == sala.getId())
-                this.remover(grupo);
+                this.excluir(grupo);
         }
         return true;
     }
@@ -48,5 +49,23 @@ public class RepositorioGrupo {
                 grupos.add(grupo);
         }
         return grupos;   
+    }
+
+    public boolean alterarNome(int codigo, String nome) {
+        Grupo grupo = this.buscarGrupo(codigo);
+        if (grupo != null){
+            grupo.setNome(nome);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean alterarLider(int codigo, Usuario usuario) {
+        Grupo grupo = this.buscarGrupo(codigo);
+        if (grupo != null){
+            grupo.setLider(usuario);
+            return true;
+        }
+        return false;
     }
 }

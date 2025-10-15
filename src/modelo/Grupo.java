@@ -35,4 +35,22 @@ public class Grupo {
     public Usuario getLider() {
         return lider;
     }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setLider(Usuario lider) {
+        this.lider = lider;
+    }
+
+    @Override
+    public String toString() {
+        return "Grupo {" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", sala=" + sala +
+                ", líder=" + lider +
+                '}';
+    }
 }

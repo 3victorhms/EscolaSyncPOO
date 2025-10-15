@@ -5,6 +5,7 @@ import modelo.Grupo;
 import modelo.Sala;
 import modelo.Usuario;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -33,7 +34,46 @@ public class UiGrupo {
         }
     }
 
-    public void excluir() {
+    public void excluir(int codigo) {
+        if (sistema.excluirGrupo(codigo)) {
+            System.out.println("Grupo excluído com sucesso!");
+        } else {
+            System.out.println("Erro ao excluir grupo!");
+        }
+    }
+
+    public void atualizar(int codigo) {
+        System.out.println("\n O que você deseja atualizar? \n");
+        System.out.println("[1] Nome");
+        System.out.println("[2] Líder");
+        System.out.println("[0] Voltar");
+
+        int opcao = scn.nextInt();
+        scn.nextLine();
+
+        switch (opcao) {
+            case 1:
+                System.out.println("Insira o novo nome do grupo:");
+                String nome = scn.nextLine();
+                if (nome != null && !nome.isEmpty()) {
+                    if (sistema.atualizarNomeGrupo(codigo, nome)) {
+                        System.out.println("Nome atualizado com sucesso!");
+                    }
+                }
+                break;
+            case 2:
+                System.out.println("Insira o username do novo líder do grupo:");
+                String lider = scn.nextLine();
+                if (lider != null && !lider.isEmpty() && sistema.usuarioExiste(lider)) {
+                    if (sistema.atualizarLiderGrupo(codigo, lider)) {
+                        System.out.println("Líder atualizado com sucesso!");
+                    }
+                }
+                break;
+            case 0:
+                break;
+        }
+
     }
 
     public void entrar() {
@@ -41,14 +81,29 @@ public class UiGrupo {
         int codigo = scn.nextInt();
         scn.nextLine();
         if (codigo <= 0)
-            System.out.println(">>> Código inválido!");
-        else if (sistema.entrarGrupo(codigo)) {
-            System.out.println("Entrou no grupo com sucesso!");
-        } else {
-            System.out.println("Erro ao acessar grupo!");
-        }
+            System.out.println("Código inválido!");
+        else if (!sistema.grupoExiste(codigo)) {
+            System.out.println("Grupo não encontrado!");
+        } else if (!sistema.usuarioEstaNoGrupo(codigo)) {
+            if (sistema.entrarGrupo(codigo)) {
+                System.out.println("Entrou no grupo com sucesso!");
+            } else {
+                System.out.println("Erro ao acessar grupo!");
+            }
+        } else System.out.println("Você já está no grupo!");
 
     }
 
-    public void sair() {}
+    public void sair(int codigo) {
+        if (sistema.sairGrupo(codigo)) {
+            System.out.println("Saiu do grupo realizado com sucesso!");
+        } else {
+            System.out.println("Erro ao sair do grupo!");
+        }
+    }
+
+    public void listarGrupos(List<Grupo> grupos) {
+        for (Grupo grupo : grupos)
+            System.out.println(grupo.toString());
+    }
 }

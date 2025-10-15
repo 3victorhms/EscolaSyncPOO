@@ -39,7 +39,6 @@ public class Usuario {
         return "Usuário {" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 }
