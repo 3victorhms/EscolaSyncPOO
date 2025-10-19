@@ -49,8 +49,8 @@ public class Grupo {
         return "Grupo {" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", sala=" + sala +
-                ", líder=" + lider +
+                ", sala=" + sala.getNome() +
+                ", líder=" + lider.getUsername() +
                 '}';
     }
 }

@@ -1,6 +1,8 @@
 package dados;
 
+import modelo.Atividade;
 import modelo.Sala;
+import modelo.Usuario;
 import modelo.UsuarioAtividade;
 
 import java.util.List;
@@ -32,5 +34,24 @@ public class RepositorioUsuarioAtividade {
             }
         }
         return true;
+    }
+
+    public boolean atividadeJaAtribuida(Atividade atividade, Usuario usuario) {
+        for (UsuarioAtividade usuarioAtividade : this.getUsuarioAtividades()){
+            if (usuarioAtividade.getAtividade().equals(atividade) && usuarioAtividade.getUsuario().equals(usuario)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean alterarStatus(int codigo, String username, String status) {
+        for (UsuarioAtividade usuarioAtividade : this.getUsuarioAtividades()){
+            if (usuarioAtividade.getAtividade().getId() == codigo && usuarioAtividade.getUsuario().getUsername().equals(username)) {
+                usuarioAtividade.setStatus(status);
+                return true;
+            }
+        }
+        return false;
     }
 }

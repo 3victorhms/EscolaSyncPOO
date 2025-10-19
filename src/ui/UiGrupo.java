@@ -67,6 +67,8 @@ public class UiGrupo {
                 if (lider != null && !lider.isEmpty() && sistema.usuarioExiste(lider)) {
                     if (sistema.atualizarLiderGrupo(codigo, lider)) {
                         System.out.println("Líder atualizado com sucesso!");
+                    } else {
+                        System.out.println("Erro ao atualizar líder!");
                     }
                 }
                 break;
@@ -84,7 +86,7 @@ public class UiGrupo {
             System.out.println("Código inválido!");
         else if (!sistema.grupoExiste(codigo)) {
             System.out.println("Grupo não encontrado!");
-        } else if (!sistema.usuarioEstaNoGrupo(codigo)) {
+        } else if (!sistema.usuarioEstaNoGrupo(codigo, sistema.getUsuarioAtual().getUsername())) {
             if (sistema.entrarGrupo(codigo)) {
                 System.out.println("Entrou no grupo com sucesso!");
             } else {

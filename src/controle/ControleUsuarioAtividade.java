@@ -23,4 +23,12 @@ public class ControleUsuarioAtividade {
     public boolean removerAtividadesDeAlunoDaSala(int idSala, String username) {
         return repositorioUsuarioAtividade.removerAtividadesDeAlunoDaSala(idSala, username);
     }
+
+    public boolean atividadeJaAtribuida(Atividade atividade, Usuario usuario) {
+        return repositorioUsuarioAtividade.atividadeJaAtribuida(atividade, usuario);
+    }
+
+    public boolean alterarStatus(int codigo, String username, String status) {
+        return repositorioUsuarioAtividade.alterarStatus(codigo, username, status);
+    }
 }

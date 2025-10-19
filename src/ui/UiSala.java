@@ -31,25 +31,13 @@ public class UiSala {
             System.out.println("Insira a descrição da sala: ");
             String descricao = scn.nextLine();
             if (descricao != null && !descricao.isEmpty()) {
-                System.out.println("Insira a data de criação da sala: ");
-                String dataCriacao = scn.nextLine();
-                if (dataCriacao != null && !dataCriacao.isEmpty()) {
-                    Date data;
-                    try {
-                        data = sdf.parse(dataCriacao);
-                    } catch (ParseException e) {
-                        System.out.println(">>> Data inválida!");
-                        return;
-                    }
-                    Sala sala = Sala.getInstance(nome, descricao, data, sistema.buscarUsuario(sistema.getUsuarioAtual().getUsername()));
-                    if (sistema.adicionarSala(sala))
-                        if (sistema.entrarSala(sala.getId()))
-                            System.out.println(">>> Sala criada com sucesso!");
-                        else
-                            System.out.println(">>> Falha ao criar sala!");
-                } else {
-                    System.out.println(">>> Data inválida!");
-                }
+                Date dataCriacao = new Date();
+                Sala sala = Sala.getInstance(nome, descricao, dataCriacao, sistema.buscarUsuario(sistema.getUsuarioAtual().getUsername()));
+                if (sistema.adicionarSala(sala))
+                    if (sistema.entrarSala(sala.getId()))
+                        System.out.println(">>> Sala criada com sucesso!");
+                    else
+                        System.out.println(">>> Falha ao criar sala!");
             } else {
                 System.out.println(">>> Descrição inválida!");
             }
@@ -58,34 +46,78 @@ public class UiSala {
         }
     }
 
-    public void excluir() {
-        System.out.println("Insira o código da sala:");
-        int codigo = scn.nextInt();
-        scn.nextLine();
-        if (codigo <= 0)
-            System.out.println(">>> Código inválido!");
-        else if (sistema.salaExiste(codigo)) {
-            if (sistema.excluirSala(codigo)) {
-                if (sistema.removerAlunosSala(codigo)) {
-                    if (sistema.removerAtividadesSala(codigo)) {
-                        if (sistema.removerGruposSala(codigo)) {
-                            System.out.println("Sala excluída com sucesso!");
-                        } else System.out.println("Falha ao remover grupos da sala!");
-                    }
+    public void excluir(Sala sala) {
+        System.out.println("\n=== Excluir Sala ===");
+        System.out.println("Tem certeza que deseja excluir a sala '" + sala.getNome() + "'?");
+        System.out.println("Esta ação não pode ser desfeita!");
+        System.out.println("Digite 'CONFIRMAR' para excluir:");
+
+        String confirmacao = scn.nextLine();
+
+        if (confirmacao.equals("CONFIRMAR")) {
+            if (sistema.excluirSala(sala.getId())) {
+                if (sistema.removerAlunosSala(sala.getId()) &&
+                        sistema.removerAtividadesSala(sala.getId()) &&
+                        sistema.removerGruposSala(sala.getId())) {
+                    System.out.println("Sala excluída com sucesso!");
+                } else {
+                    System.out.println("A sala foi excluída, mas houve erros ao remover alguns elementos!");
                 }
-            } else
-                System.out.println("Sala não encontrada!");
+            } else {
+                System.out.println("Erro ao excluir a sala!");
+            }
+        } else {
+            System.out.println("Operação cancelada!");
         }
     }
 
-    public void atualizar() {
-        System.out.println("Insira o código da sala:");
-        int codigo = scn.nextInt();
+    public void atualizar(Sala sala) {
+        System.out.println("\n=== Atualizar Sala ===");
+        System.out.println("O que deseja atualizar?");
+        System.out.println("[1] Nome");
+        System.out.println("[2] Descrição");
+        System.out.println("[3] Líder");
+        System.out.println("[0] Voltar");
+
+        int opcao = scn.nextInt();
         scn.nextLine();
-        if (codigo <= 0)
-            System.out.println(">>> Código inválido!");
-        else if (sistema.salaExiste(codigo)) {
-            System.out.println();
+
+        switch (opcao) {
+            case 1:
+                System.out.println("Digite o novo nome:");
+                String novoNome = scn.nextLine();
+                if (novoNome != null && !novoNome.isEmpty()) {
+                    if (sistema.atualizarNomeSala(sala.getId(), novoNome)) {
+                        System.out.println("Nome atualizado com sucesso!");
+                    } else {
+                        System.out.println("Erro ao atualizar o nome!");
+                    }
+                }
+                break;
+
+            case 2:
+                System.out.println("Digite a nova descrição:");
+                String novaDescricao = scn.nextLine();
+                if (novaDescricao != null && !novaDescricao.isEmpty()) {
+                    if (sistema.atualizarDescricaoSala(sala.getId(), novaDescricao)) {
+                        System.out.println("Descrição atualizada com sucesso!");
+                    } else {
+                        System.out.println("Erro ao atualizar a descrição!");
+                    }
+                }
+                break;
+
+            case 3:
+                System.out.println("Digite o username do novo líder:");
+                String novoLider = scn.nextLine();
+                if (novoLider != null && !novoLider.isEmpty()) {
+                    if (sistema.atualizarLiderSala(sala.getId(), novoLider)) {
+                        System.out.println("Líder atualizado com sucesso!");
+                    } else {
+                        System.out.println("Erro ao atualizar o líder!");
+                    }
+                }
+                break;
         }
     }
 
@@ -95,7 +127,6 @@ public class UiSala {
             return;
         }
 
-        System.out.println("\n=== Lista de Salas ===");
         for (Sala sala : salas) {
             System.out.println("-".repeat(40));
             System.out.println("Código: " + sala.getId());

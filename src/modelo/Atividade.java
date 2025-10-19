@@ -85,4 +85,17 @@ public class Atividade {
     public Sala getSala() {
         return sala;
     }
+
+    @Override
+    public String toString() {
+        return "Atividade {" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", dataEntrega=" + dataEntrega +
+                ", dataConclusao=" + dataConclusao +
+                ", materia='" + materia + '\'' +
+                ", valor=" + valor +
+                ", sala=" + sala.getNome();
+    }
 }

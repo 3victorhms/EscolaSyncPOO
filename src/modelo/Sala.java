@@ -43,4 +43,16 @@ public class Sala {
     public Usuario getLider() {
         return lider;
     }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setLider(Usuario lider) {
+        this.lider = lider;
+    }
 }

@@ -50,7 +50,7 @@ public class RepositorioUsuarioGrupo {
 
     public boolean usuarioEstaNoGrupo(Usuario usuarioAtual, Grupo grupo) {
         for (UsuarioGrupo usuarioGrupo : this.getUsuarioGrupos()) {
-            if (usuarioGrupo.getUsuario().equals(usuarioAtual) && usuarioGrupo.getGrupo().equals(grupo))
+            if (usuarioGrupo.getUsuario().getUsername().equals(usuarioAtual.getUsername()) && usuarioGrupo.getGrupo().getId() == grupo.getId())
                 return true;
         }
         return false;

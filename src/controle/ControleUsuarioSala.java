@@ -33,4 +33,8 @@ public class ControleUsuarioSala {
     public List<Usuario> listarParticipantesSala(Sala sala) {
         return repositorioUsuarioSala.listarParticipantesSala(sala);
     }
+
+    public boolean usuarioEstaNaSala(int id, String username) {
+        return repositorioUsuarioSala.usuarioEstaNaSala(id, username);
+    }
 }

@@ -47,7 +47,7 @@ public class UiAtividade {
                         System.out.println("Insira o valor da atividade:");
                         double valor = scn.nextDouble();
                         if (valor > 0) {
-                            sistema.adicionarAtividade(Atividade.getInstance(nome, descricao, dataEntrega, null, materia, valor, sistema.buscarSala(sala.getId())));
+                            sistema.adicionarAtividade(Atividade.getInstance(nome, descricao, dataEntrega, null, materia, valor, sistema.buscarSala(sala.getId())), sala.getId());
                         }
                     }
                 }
@@ -67,23 +67,25 @@ public class UiAtividade {
             System.out.println("Atividade não encontrada!");
     }
 
-    public void atualizar() {
-        System.out.println("Insira o código da atividade:");
-        int codigo = scn.nextInt();
-        scn.nextLine();
-
+    public void atualizar(int codigo) {
         Atividade atividade = sistema.buscarAtividade(codigo);
+        boolean concluida = false;
 
         if (atividade != null) {
 
             System.out.println("O que você deseja atualizar?");
-            System.out.println("1. Nome");
-            System.out.println("2. Descrição");
-            System.out.println("3. Data de entrega");
-            System.out.println("4. Data de conclusão");
-            System.out.println("5. Matéria");
-            System.out.println("6. Valor");
-            System.out.println("7. Sair");
+            System.out.println("[1] Nome");
+            System.out.println("[2] Descrição");
+            System.out.println("[3] Data de entrega");
+            if (!sistema.atividadeJaConcluida(codigo))
+                System.out.println("[4] Marcar como concluída");
+            else {
+                System.out.println("[4] Marcar como não concluída");
+                concluida = true;
+            }
+            System.out.println("[5] Matéria");
+            System.out.println("[6] Valor");
+            System.out.println("[7] Sair");
             System.out.print(">>> Escolha uma opção: ");
             int opcao = scn.nextInt();
             scn.nextLine();
@@ -124,20 +126,18 @@ public class UiAtividade {
                     else System.out.println(">>> Data inválida!");
                 }
             } else if (opcao == 4) {
-                System.out.println("Insira a nova data de conclusão da atividade:");
-                String data = scn.nextLine();
-                if (data != null && !data.isEmpty()) {
-                    Date dataConclusao = null;
-                    try {
-                        dataConclusao = sdf.parse(data);
-                    } catch (ParseException e) {
-                        System.out.println(">>> Data inválida!");
+                if (!sistema.atividadeJaAtribuida(atividade.getId(), sistema.getUsuarioAtual().getUsername())) {
+                    System.out.println(">>> Atividade não atribuída a este usuário!");
+                } else {
+                    if (!concluida) {
+                        if (sistema.marcarAtividadeConcluida(codigo))
+                            System.out.println(">>> Atividade marcada como concluída com sucesso!");
+                        else System.out.println(">>> Erro ao marcar atividade como concluída!");
+                    } else {
+                        if (sistema.marcarAtividadeNaoConcluida(codigo))
+                            System.out.println(">>> Atividade marcada como não concluída com sucesso!");
+                        else System.out.println(">>> Erro ao marcar atividade como não concluída!");
                     }
-                    if (dataConclusao != null)
-                        if (sistema.alterarDataConclusaoAtividade(codigo, dataConclusao))
-                            System.out.println(">>> Data de conclusão atualizada com sucesso!");
-                        else System.out.println(">>> Erro ao atualizar data de conclusão!");
-                    else System.out.println(">>> Data inválida!");
                 }
             } else if (opcao == 5) {
                 System.out.println("Insira a nova matéria referente à atividade:");

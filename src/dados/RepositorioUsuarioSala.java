@@ -19,14 +19,15 @@ public class RepositorioUsuarioSala {
     }
 
     public boolean adicionar(UsuarioSala usuarioSala) {
-        if (!usuarioEstaNaSala(usuarioSala.getUsuario(), usuarioSala.getSala()))
-            return usuarioSalas.add(usuarioSala);
+        if (usuarioSala != null)
+            if (!usuarioEstaNaSala(usuarioSala.getSala().getId(), usuarioSala.getUsuario().getUsername()))
+                return usuarioSalas.add(usuarioSala);
         return false;
     }
 
-    public boolean usuarioEstaNaSala(Usuario usuario, Sala sala) {
+    public boolean usuarioEstaNaSala(int idSala, String username) {
         for (UsuarioSala usuarioSala : this.getUsuarioSalas()) {
-            if (usuarioSala.getUsuario().getUsername().equals(usuario.getUsername()) && usuarioSala.getSala().equals(sala))
+            if (usuarioSala.getUsuario().getUsername().equals(username) && usuarioSala.getSala().getId() == idSala)
                 return true;
         }
         return false;
