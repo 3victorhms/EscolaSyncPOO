@@ -180,6 +180,10 @@ public class Sistema {
         return controleSalaAtividade.listarAtividadesDaSala(controleSala.buscarSala(codigoSala));
     }
 
+    public boolean atividadeExiste (int codigo) {
+        return controleAtividade.buscarAtividade(codigo) != null;
+    }
+
     public boolean atividadeJaAtribuida(int codigoAtividade, String username) {
         return controleUsuarioAtividade.atividadeJaAtribuida(
                 this.buscarAtividade(codigoAtividade),

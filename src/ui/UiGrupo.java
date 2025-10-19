@@ -34,18 +34,30 @@ public class UiGrupo {
         }
     }
 
-    public void excluir(int codigo) {
-        if (sistema.excluirGrupo(codigo)) {
-            System.out.println("Grupo excluído com sucesso!");
+    public void excluir(Grupo grupo) {
+        System.out.println("\n=== Excluir Grupo ===");
+        System.out.println("Tem certeza que deseja excluir o grupo '" + grupo.getNome() + "'?");
+        System.out.println("Esta ação não pode ser desfeita!");
+        System.out.println("Digite 'CONFIRMAR' para excluir:");
+
+        String confirmacao = scn.nextLine();
+
+        if (confirmacao.equals("CONFIRMAR")) {
+            if (sistema.excluirGrupo(grupo.getId())) {
+                System.out.println("Grupo excluído com sucesso!");
+            } else {
+                System.out.println("Erro ao excluir grupo!");
+            }
         } else {
-            System.out.println("Erro ao excluir grupo!");
+            System.out.println("Operação cancelada!");
         }
     }
 
-    public void atualizar(int codigo) {
-        System.out.println("\n O que você deseja atualizar? \n");
+    public void atualizar(Grupo grupo) {
+        System.out.println("\n=== Atualizar Grupo ===");
+        System.out.println("O que deseja atualizar?");
         System.out.println("[1] Nome");
-        System.out.println("[2] Líder");
+        System.out.println("[2] Transferir liderança");
         System.out.println("[0] Voltar");
 
         int opcao = scn.nextInt();
@@ -53,29 +65,33 @@ public class UiGrupo {
 
         switch (opcao) {
             case 1:
-                System.out.println("Insira o novo nome do grupo:");
-                String nome = scn.nextLine();
-                if (nome != null && !nome.isEmpty()) {
-                    if (sistema.atualizarNomeGrupo(codigo, nome)) {
+                System.out.println("Digite o novo nome:");
+                String novoNome = scn.nextLine();
+                if (novoNome != null && !novoNome.isEmpty()) {
+                    if (sistema.atualizarNomeGrupo(grupo.getId(), novoNome)) {
                         System.out.println("Nome atualizado com sucesso!");
-                    }
-                }
-                break;
-            case 2:
-                System.out.println("Insira o username do novo líder do grupo:");
-                String lider = scn.nextLine();
-                if (lider != null && !lider.isEmpty() && sistema.usuarioExiste(lider)) {
-                    if (sistema.atualizarLiderGrupo(codigo, lider)) {
-                        System.out.println("Líder atualizado com sucesso!");
                     } else {
-                        System.out.println("Erro ao atualizar líder!");
+                        System.out.println("Erro ao atualizar nome!");
                     }
                 }
                 break;
-            case 0:
+
+            case 2:
+                System.out.println("Digite o username do novo líder:");
+                String novoLider = scn.nextLine();
+                if (novoLider != null && !novoLider.isEmpty()) {
+                    if (!sistema.usuarioEstaNoGrupo(grupo.getId(), novoLider)) {
+                        System.out.println("O novo líder deve ser um membro do grupo!");
+                        return;
+                    }
+                    if (sistema.atualizarLiderGrupo(grupo.getId(), novoLider)) {
+                        System.out.println("Liderança transferida com sucesso!");
+                    } else {
+                        System.out.println("Erro ao transferir liderança!");
+                    }
+                }
                 break;
         }
-
     }
 
     public void entrar() {

@@ -187,7 +187,7 @@ public class UiPrincipal {
 
                 case 7:
                     if (usuarioEstaNaSala && sistema.getUsuarioAtual().getUsername().equals(sala.getLider().getUsername())) {
-                        atualizarSala(sala);
+                        uiSala.atualizar(sala);
                     } else {
                         System.out.println("Apenas o líder pode atualizar a sala!");
                     }
@@ -195,7 +195,7 @@ public class UiPrincipal {
 
                 case 8:
                     if (usuarioEstaNaSala && sistema.getUsuarioAtual().getUsername().equals(sala.getLider().getUsername())) {
-                        excluirSala(sala);
+                        uiSala.excluir(sala);
                         return;
                     } else {
                         System.out.println("Apenas o líder pode excluir a sala!");
@@ -263,7 +263,7 @@ public class UiPrincipal {
 
                 case 2:
                     if (isLider) {
-                        atualizarGrupo(g);
+                        uiGrupo.atualizar(g);
                     } else {
                         System.out.println("Apenas o líder pode atualizar o grupo!");
                     }
@@ -271,7 +271,7 @@ public class UiPrincipal {
 
                 case 3:
                     if (isLider) {
-                        excluirGrupo(g);
+                        uiGrupo.excluir(g);
                         return;
                     } else {
                         System.out.println("Apenas o líder pode excluir o grupo!");
@@ -280,8 +280,16 @@ public class UiPrincipal {
 
                 case 4:
                     if (isLider) {
-                        atribuirAtividadeAMembro(g);
-                    } else {
+                        System.out.println("Digite o username do membro:");
+                        String username = scn.nextLine();
+                        if (sistema.usuarioExiste(username))
+                            if (sistema.usuarioEstaNoGrupo(g.getId(), username)) {
+                                System.out.println("Digite o id da atividade:");
+                                int idAtividade = scn.nextInt();
+                                if (sistema.atividadeExiste(idAtividade)) {
+                                    uiUsuario.adicionarAtividade(idAtividade, username);
+                                }
+                            }
                         System.out.println("Apenas o líder pode atribuir atividades!");
                     }
                     break;
@@ -292,160 +300,6 @@ public class UiPrincipal {
                 default:
                     System.out.println("Opção inválida!");
             }
-        }
-    }
-
-    private void atualizarGrupo(Grupo grupo) {
-        System.out.println("\n=== Atualizar Grupo ===");
-        System.out.println("O que deseja atualizar?");
-        System.out.println("[1] Nome");
-        System.out.println("[2] Transferir liderança");
-        System.out.println("[0] Voltar");
-
-        int opcao = scn.nextInt();
-        scn.nextLine();
-
-        switch (opcao) {
-            case 1:
-                System.out.println("Digite o novo nome:");
-                String novoNome = scn.nextLine();
-                if (novoNome != null && !novoNome.isEmpty()) {
-                    if (sistema.atualizarNomeGrupo(grupo.getId(), novoNome)) {
-                        System.out.println("Nome atualizado com sucesso!");
-                    } else {
-                        System.out.println("Erro ao atualizar nome!");
-                    }
-                }
-                break;
-
-            case 2:
-                System.out.println("Digite o username do novo líder:");
-                String novoLider = scn.nextLine();
-                if (novoLider != null && !novoLider.isEmpty()) {
-                    if (!sistema.usuarioEstaNoGrupo(grupo.getId(), novoLider)) {
-                        System.out.println("O novo líder deve ser um membro do grupo!");
-                        return;
-                    }
-                    if (sistema.atualizarLiderGrupo(grupo.getId(), novoLider)) {
-                        System.out.println("Liderança transferida com sucesso!");
-                    } else {
-                        System.out.println("Erro ao transferir liderança!");
-                    }
-                }
-                break;
-        }
-    }
-
-    private void excluirGrupo(Grupo grupo) {
-        System.out.println("\n=== Excluir Grupo ===");
-        System.out.println("Tem certeza que deseja excluir o grupo '" + grupo.getNome() + "'?");
-        System.out.println("Esta ação não pode ser desfeita!");
-        System.out.println("Digite 'CONFIRMAR' para excluir:");
-
-        String confirmacao = scn.nextLine();
-
-        if (confirmacao.equals("CONFIRMAR")) {
-            if (sistema.excluirGrupo(grupo.getId())) {
-                System.out.println("Grupo excluído com sucesso!");
-            } else {
-                System.out.println("Erro ao excluir grupo!");
-            }
-        } else {
-            System.out.println("Operação cancelada!");
-        }
-    }
-
-    private void atribuirAtividadeAMembro(Grupo grupo) {
-        System.out.println("\n=== Atribuir Atividade a Membro ===");
-
-        System.out.println("Digite o código da atividade:");
-        int codigoAtividade = scn.nextInt();
-        scn.nextLine();
-
-        Atividade atividade = sistema.buscarAtividade(codigoAtividade);
-        if (atividade == null) {
-            System.out.println("Atividade não encontrada!");
-            return;
-        }
-
-        System.out.println("Digite o username do membro:");
-        String username = scn.nextLine();
-
-        if (!sistema.usuarioExiste(username)) {
-            System.out.println("Usuário não encontrado!");
-            return;
-        }
-
-        if (!sistema.usuarioEstaNoGrupo(grupo.getId(), username)) {
-            System.out.println("Este usuário não é membro do grupo!");
-            return;
-        }
-
-        if (sistema.atividadeJaAtribuida(codigoAtividade, username)) {
-            System.out.println("Esta atividade já está atribuída a este usuário!");
-            return;
-        }
-
-        if (sistema.adicionarAtividadeParaAluno(codigoAtividade, username)) {
-            System.out.println("Atividade atribuída com sucesso!");
-        } else {
-            System.out.println("Erro ao atribuir atividade!");
-        }
-    }
-
-    private void atualizarSala(Sala sala) {
-        System.out.println("\n=== Atualizar Sala ===");
-        System.out.println("O que deseja atualizar?");
-        System.out.println("[1] Nome");
-        System.out.println("[2] Descrição");
-        System.out.println("[0] Voltar");
-
-        int opcao = scn.nextInt();
-        scn.nextLine();
-
-        switch (opcao) {
-            case 1:
-                System.out.println("Digite o novo nome:");
-                String novoNome = scn.nextLine();
-                if (novoNome != null && !novoNome.isEmpty()) {
-                    if (sistema.atualizarNomeSala(sala.getId(), novoNome)) {
-                        System.out.println("Nome atualizado com sucesso!");
-                    } else {
-                        System.out.println("Erro ao atualizar nome!");
-                    }
-                }
-                break;
-
-            case 2:
-                System.out.println("Digite a nova descrição:");
-                String novaDescricao = scn.nextLine();
-                if (novaDescricao != null && !novaDescricao.isEmpty()) {
-                    if (sistema.atualizarDescricaoSala(sala.getId(), novaDescricao)) {
-                        System.out.println("Descrição atualizada com sucesso!");
-                    } else {
-                        System.out.println("Erro ao atualizar descrição!");
-                    }
-                }
-                break;
-        }
-    }
-
-    private void excluirSala(Sala sala) {
-        System.out.println("\n=== Excluir Sala ===");
-        System.out.println("Tem certeza que deseja excluir a sala '" + sala.getNome() + "'?");
-        System.out.println("Esta ação não pode ser desfeita!");
-        System.out.println("Digite 'CONFIRMAR' para excluir:");
-
-        String confirmacao = scn.nextLine();
-
-        if (confirmacao.equals("CONFIRMAR")) {
-            if (sistema.excluirSala(sala.getId())) {
-                System.out.println("Sala excluída com sucesso!");
-            } else {
-                System.out.println("Erro ao excluir sala!");
-            }
-        } else {
-            System.out.println("Operação cancelada!");
         }
     }
 
@@ -564,17 +418,7 @@ public class UiPrincipal {
                     break;
 
                 case 3:
-                    System.out.println("Tem certeza que deseja excluir esta atividade? (S/N)");
-                    String confirmacao = scn.nextLine();
-
-                    if (confirmacao.equalsIgnoreCase("S")) {
-                        if (sistema.excluirAtividade(idAtividade)) {
-                            System.out.println("Atividade excluída com sucesso!");
-                            return;
-                        } else {
-                            System.out.println("Erro ao excluir atividade!");
-                        }
-                    }
+                    uiAtividade.excluir(atividade.getId());
                     break;
 
                 case 0:

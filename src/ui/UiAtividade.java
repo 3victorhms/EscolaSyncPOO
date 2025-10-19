@@ -55,16 +55,18 @@ public class UiAtividade {
         }
     }
 
-    public void excluir() {
-        System.out.println("Insira o código da atividade:");
-        int codigo = scn.nextInt();
-        scn.nextLine();
-        if (codigo <= 0)
-            System.out.println(">>> Código inválido!");
-        else if (sistema.excluirAtividade(codigo))
-            System.out.println("Atividade excluída com sucesso!");
-        else
-            System.out.println("Atividade não encontrada!");
+    public void excluir(int idAtividade) {
+        System.out.println("Tem certeza que deseja excluir esta atividade? (S/N)");
+        String confirmacao = scn.nextLine();
+
+        if (confirmacao.equalsIgnoreCase("S")) {
+            if (sistema.excluirAtividade(idAtividade)) {
+                System.out.println("Atividade excluída com sucesso!");
+                return;
+            } else {
+                System.out.println("Erro ao excluir atividade!");
+            }
+        }
     }
 
     public void atualizar(int codigo) {

@@ -76,7 +76,6 @@ public class UiSala {
         System.out.println("O que deseja atualizar?");
         System.out.println("[1] Nome");
         System.out.println("[2] Descrição");
-        System.out.println("[3] Líder");
         System.out.println("[0] Voltar");
 
         int opcao = scn.nextInt();
@@ -90,7 +89,7 @@ public class UiSala {
                     if (sistema.atualizarNomeSala(sala.getId(), novoNome)) {
                         System.out.println("Nome atualizado com sucesso!");
                     } else {
-                        System.out.println("Erro ao atualizar o nome!");
+                        System.out.println("Erro ao atualizar nome!");
                     }
                 }
                 break;
@@ -102,19 +101,7 @@ public class UiSala {
                     if (sistema.atualizarDescricaoSala(sala.getId(), novaDescricao)) {
                         System.out.println("Descrição atualizada com sucesso!");
                     } else {
-                        System.out.println("Erro ao atualizar a descrição!");
-                    }
-                }
-                break;
-
-            case 3:
-                System.out.println("Digite o username do novo líder:");
-                String novoLider = scn.nextLine();
-                if (novoLider != null && !novoLider.isEmpty()) {
-                    if (sistema.atualizarLiderSala(sala.getId(), novoLider)) {
-                        System.out.println("Líder atualizado com sucesso!");
-                    } else {
-                        System.out.println("Erro ao atualizar o líder!");
+                        System.out.println("Erro ao atualizar descrição!");
                     }
                 }
                 break;

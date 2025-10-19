@@ -99,7 +99,6 @@ public class UiUsuario {
 
     // relacionados à Atividade
     public void adicionarAtividade(int idAtividade, String username) {
-        
         if (idAtividade > 0 && username != null) {
             if (sistema.adicionarAtividadeParaAluno(idAtividade, username)) {
                 System.out.println("Atividade adicionada com sucesso!");
