@@ -5,6 +5,7 @@ import modelo.Sala;
 import modelo.Usuario;
 import modelo.UsuarioAtividade;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class RepositorioUsuarioAtividade {
     }
 
     public boolean removerAtividadesDeAlunoDaSala(int idSala, String username) {
-        for (UsuarioAtividade usuarioAtividade : this.getUsuarioAtividades()){
+        for (UsuarioAtividade usuarioAtividade : this.getUsuarioAtividades()) {
             if (usuarioAtividade.getAtividade().getSala().getId() == idSala && usuarioAtividade.getUsuario().getUsername().equals(username)) {
                 this.remover(usuarioAtividade);
             }
@@ -37,7 +38,7 @@ public class RepositorioUsuarioAtividade {
     }
 
     public boolean atividadeJaAtribuida(Atividade atividade, Usuario usuario) {
-        for (UsuarioAtividade usuarioAtividade : this.getUsuarioAtividades()){
+        for (UsuarioAtividade usuarioAtividade : this.getUsuarioAtividades()) {
             if (usuarioAtividade.getAtividade().equals(atividade) && usuarioAtividade.getUsuario().equals(usuario)) {
                 return true;
             }
@@ -46,9 +47,13 @@ public class RepositorioUsuarioAtividade {
     }
 
     public boolean alterarStatus(int codigo, String username, String status) {
-        for (UsuarioAtividade usuarioAtividade : this.getUsuarioAtividades()){
+        for (UsuarioAtividade usuarioAtividade : this.getUsuarioAtividades()) {
             if (usuarioAtividade.getAtividade().getId() == codigo && usuarioAtividade.getUsuario().getUsername().equals(username)) {
                 usuarioAtividade.setStatus(status);
+                if (status.equals("Concluída"))
+                    usuarioAtividade.getAtividade().setDataConclusao(new Date());
+                else
+                    usuarioAtividade.getAtividade().setDataConclusao(null);
                 return true;
             }
         }
