@@ -19,4 +19,6 @@ public class RepositorioSala {
     public boolean remover(Sala sala) {
         return salas.remove(sala);
     }
+
+    
 }
