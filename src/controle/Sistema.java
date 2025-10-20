@@ -262,6 +262,10 @@ public class Sistema {
         return controleGrupo.buscarGrupo(codigo) != null;
     }
 
+    public boolean grupoEhDaSala(int codigoGrupo, int codigoSala) {
+        return controleGrupo.grupoEhDaSala(controleGrupo.buscarGrupo(codigoGrupo), controleSala.buscarSala(codigoSala));
+    }
+
     public List<Grupo> listarGruposDaSala(int codigoSala) {
         return controleGrupo.listarGruposDaSala(controleSala.buscarSala(codigoSala));
     }

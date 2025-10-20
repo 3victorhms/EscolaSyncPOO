@@ -70,4 +70,8 @@ public class RepositorioGrupo {
         }
         return false;
     }
+
+    public boolean grupoEhDaSala(Grupo grupo, Sala sala) {
+        return grupo.getSala().getId() == sala.getId();
+    }
 }
