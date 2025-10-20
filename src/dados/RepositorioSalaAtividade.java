@@ -27,8 +27,8 @@ public class RepositorioSalaAtividade {
     }
 
     public boolean removerAtividadesSala(Sala sala) {
-        for (SalaAtividade salaAtividade : this.getSalasAtividades()){
-            if(salaAtividade.getSala().equals(sala))
+        for (SalaAtividade salaAtividade : this.getSalasAtividades()) {
+            if (salaAtividade.getSala().equals(sala))
                 this.remover(salaAtividade);
         }
         return true;
@@ -36,9 +36,10 @@ public class RepositorioSalaAtividade {
 
     public List<Atividade> listarAtividadesDaSala(Sala sala) {
         List<Atividade> atividades = new ArrayList<>();
-        for (SalaAtividade salaAtividade : this.getSalasAtividades()){
-            if(salaAtividade.getSala().equals(sala))
-                atividades.add(salaAtividade.getAtividade());
+        for (SalaAtividade salaAtividade : this.getSalasAtividades()) {
+            if (salaAtividade != null)
+                if (salaAtividade.getSala().equals(sala))
+                    atividades.add(salaAtividade.getAtividade());
         }
         return atividades;
     }

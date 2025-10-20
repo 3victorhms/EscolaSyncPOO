@@ -94,32 +94,6 @@ public class UiGrupo {
         }
     }
 
-    public void entrar() {
-        System.out.println("Insira o código do grupo:");
-        int codigo = scn.nextInt();
-        scn.nextLine();
-        if (codigo <= 0)
-            System.out.println("Código inválido!");
-        else if (!sistema.grupoExiste(codigo)) {
-            System.out.println("Grupo não encontrado!");
-        } else if (!sistema.usuarioEstaNoGrupo(codigo, sistema.getUsuarioAtual().getUsername())) {
-            if (sistema.entrarGrupo(codigo)) {
-                System.out.println("Entrou no grupo com sucesso!");
-            } else {
-                System.out.println("Erro ao acessar grupo!");
-            }
-        } else System.out.println("Você já está no grupo!");
-
-    }
-
-    public void sair(int codigo) {
-        if (sistema.sairGrupo(codigo)) {
-            System.out.println("Saiu do grupo realizado com sucesso!");
-        } else {
-            System.out.println("Erro ao sair do grupo!");
-        }
-    }
-
     public void listarGrupos(List<Grupo> grupos) {
         for (Grupo grupo : grupos)
             System.out.println(grupo.toString());

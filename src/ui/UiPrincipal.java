@@ -176,7 +176,7 @@ public class UiPrincipal {
 
                 case 6:
                     if (usuarioEstaNaSala) {
-                        if (sistema.sairSala(sala.getId())) {
+                        if (uiUsuario.sairSala(sala.getId())) {
                             System.out.println("Saiu da sala com sucesso!");
                             return;
                         } else {
@@ -236,7 +236,14 @@ public class UiPrincipal {
             System.out.println("\nO que deseja fazer?");
 
             // todos membros do grupo
-            System.out.println("[1] Sair do grupo");
+            int aux;
+            if (sistema.usuarioEstaNoGrupo(g.getId(), sistema.getUsuarioAtual().getUsername())) {
+                System.out.println("[1] Sair do grupo");
+                aux = 1;
+            } else {
+                System.out.println("[1] Entrar no grupo");
+                aux = 2;
+            }
             System.out.println("[0] Voltar");
 
 
@@ -253,10 +260,15 @@ public class UiPrincipal {
 
             switch (opcao) {
                 case 1:
-                    if (isLider) {
-                        System.out.println("O líder não pode sair do grupo. Transfira a liderança primeiro!");
+                    if (aux == 1) {
+                        if (isLider) {
+                            System.out.println("O líder não pode sair do grupo. Transfira a liderança primeiro!");
+                        } else {
+                            uiUsuario.sairGrupo(g.getId());
+                            return;
+                        }
                     } else {
-                        uiGrupo.sair(g.getId());
+                        uiUsuario.entrarGrupo(g.getId(), sistema.getUsuarioAtual().getUsername());
                         return;
                     }
                     break;
@@ -288,9 +300,11 @@ public class UiPrincipal {
                                 int idAtividade = scn.nextInt();
                                 if (sistema.atividadeExiste(idAtividade)) {
                                     uiUsuario.adicionarAtividade(idAtividade, username);
-                                }
-                            }
-                        System.out.println("Apenas o líder pode atribuir atividades!");
+                                } else System.out.println("Atividade não encontrada!");
+                            } else System.out.println("Usuário não está no grupo!");
+                        else System.out.println("Usuário não encontrado!");
+                    } else {
+                        System.out.println("Apenas o líder pode adicionar atividades a membros!");
                     }
                     break;
 
@@ -400,7 +414,14 @@ public class UiPrincipal {
             System.out.println("Valor: " + atividade.getValor());
 
             System.out.println("\nO que deseja fazer?");
-            System.out.println("[1] Adicionar atividade à minha lista");
+            int aux;
+            if (sistema.atividadeJaAtribuida(atividade.getId(), sistema.getUsuarioAtual().getUsername())) {
+                System.out.println("[1] Remover atividade da minha lista");
+                aux = 1;
+            } else {
+                System.out.println("[1] Adicionar atividade à minha lista");
+                aux = 2;
+            }
             System.out.println("[2] Atualizar atividade");
             System.out.println("[3] Excluir atividade");
             System.out.println("[0] Voltar");
@@ -410,7 +431,10 @@ public class UiPrincipal {
 
             switch (opcao) {
                 case 1:
-                    uiUsuario.adicionarAtividade(atividade.getId(), sistema.getUsuarioAtual().getUsername());
+                    if (aux == 1)
+                        uiUsuario.removerAtividade(atividade.getId());
+                    else
+                        uiUsuario.adicionarAtividade(atividade.getId(), sistema.getUsuarioAtual().getUsername());
                     break;
 
                 case 2:
