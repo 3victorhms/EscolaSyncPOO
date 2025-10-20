@@ -2,6 +2,7 @@ package controle;
 
 import modelo.*;
 
+import java.util.Date;
 import java.util.List;
 
 public class Sistema {
@@ -32,12 +33,33 @@ public class Sistema {
         controleUsuarioGrupo = new ControleUsuarioGrupo();
         controleGrupo = new ControleGrupo();
         controleSalaAtividade = new ControleSalaAtividade();
+        iniciar();
     }
 
     public static Sistema getInstance() {
         if (instance == null)
             instance = new Sistema();
         return instance;
+    }
+
+    public void iniciar() {
+        controleUsuario.cadastrar(Usuario.getInstance("v", "1"));
+        controleUsuario.cadastrar(Usuario.getInstance("m", "2"));
+
+        controleSala.adicionar(Sala.getInstance("DS1.24", "DS1.24",new Date("06/02/2024"), this.buscarUsuario("v")));
+        controleSala.adicionar(Sala.getInstance("DS2.25", "DS2.25",new Date("06/02/2025"), this.buscarUsuario("m")));
+        controleUsuarioSala.entrarSala(UsuarioSala.getInstance(this.buscarUsuario("v"), controleSala.buscarSala(1)));
+        controleUsuarioSala.entrarSala(UsuarioSala.getInstance(this.buscarUsuario("m"), controleSala.buscarSala(2)));
+
+        controleGrupo.adicionar(Grupo.getInstance("Trabalho FP VH e M", controleSala.buscarSala(1), this.buscarUsuario("v")));
+        controleGrupo.adicionar(Grupo.getInstance("Trabalho POO VH e M", controleSala.buscarSala(2), this.buscarUsuario("m")));
+        controleUsuarioGrupo.entrarGrupo(this.buscarUsuario("v"), controleGrupo.buscarGrupo(1));
+        controleUsuarioGrupo.entrarGrupo(this.buscarUsuario("m"), controleGrupo.buscarGrupo(2));
+
+        controleAtividade.adicionar(Atividade.getInstance("Trabalho FP", "Trabalho FP", new Date("20/10/2024"), null, "FP", 10.0, controleSala.buscarSala(1)));
+        controleAtividade.adicionar(Atividade.getInstance("Trabalho POO", "Trabalho POO", new Date("20/10/2025"), null, "POO", 10.0, controleSala.buscarSala(2)));
+        controleSalaAtividade.adicionar(SalaAtividade.getInstance(controleSala.buscarSala(1), controleAtividade.buscarAtividade(1)));
+        controleSalaAtividade.adicionar(SalaAtividade.getInstance(controleSala.buscarSala(2), controleAtividade.buscarAtividade(2)));
     }
 
     // ============================================

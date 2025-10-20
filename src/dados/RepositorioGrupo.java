@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepositorioGrupo {
-    protected List <Grupo> grupos;
+    protected List<Grupo> grupos;
 
     public RepositorioGrupo() {
         grupos = new ArrayList<>();
@@ -26,17 +26,18 @@ public class RepositorioGrupo {
         return this.getGrupos().remove(grupo);
     }
 
-    public Grupo buscarGrupo(int codigoGrupo){
-        for(Grupo grupo : this.getGrupos()){
-            if (grupo.getId() == codigoGrupo)
-                return grupo;
+    public Grupo buscarGrupo(int codigoGrupo) {
+        for (Grupo grupo : this.getGrupos()) {
+            if (grupo != null)
+                if (grupo.getId() == codigoGrupo)
+                    return grupo;
         }
         return null;
     }
 
     public boolean removerGruposSala(Sala sala) {
-        for (Grupo grupo : this.getGrupos()){
-            if(grupo.getSala().getId() == sala.getId())
+        for (Grupo grupo : this.getGrupos()) {
+            if (grupo.getSala().getId() == sala.getId())
                 this.excluir(grupo);
         }
         return true;
@@ -44,16 +45,17 @@ public class RepositorioGrupo {
 
     public List<Grupo> listarGruposDaSala(Sala sala) {
         List<Grupo> grupos = new ArrayList<>();
-        for (Grupo grupo : this.getGrupos()){
-            if(grupo.getSala().getId() == sala.getId())
-                grupos.add(grupo);
+        for (Grupo grupo : this.getGrupos()) {
+            if (grupo != null)
+                if (grupo.getSala().getId() == sala.getId())
+                    grupos.add(grupo);
         }
-        return grupos;   
+        return grupos;
     }
 
     public boolean alterarNome(int codigo, String nome) {
         Grupo grupo = this.buscarGrupo(codigo);
-        if (grupo != null){
+        if (grupo != null) {
             grupo.setNome(nome);
             return true;
         }
@@ -62,7 +64,7 @@ public class RepositorioGrupo {
 
     public boolean alterarLider(int codigo, Usuario usuario) {
         Grupo grupo = this.buscarGrupo(codigo);
-        if (grupo != null){
+        if (grupo != null) {
             grupo.setLider(usuario);
             return true;
         }

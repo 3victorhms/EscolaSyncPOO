@@ -60,38 +60,43 @@ public class UiUsuario {
     }
 
     // relacionados à Sala
-    public void entrarSala(int salaId) {
+    public boolean entrarSala(int salaId) {
         if (sistema.entrarSala(salaId)) {
             System.out.println("Sala acessada com sucesso!");
+            return true;
         } else {
             System.out.println("Sala não encontrada!");
         }
+        return false;
     }
 
-    public void sairSala(int salaId) {
+    public boolean sairSala(int salaId) {
         if (sistema.sairSala(salaId)) {
             if (sistema.removerAtividadesDeAlunoDaSala(salaId)) {
                 if (sistema.removerAlunoDeGrupoDaSala(salaId)) {
                     System.out.println("Saiu da sala com sucesso!");
-                    return;
+                    return true;
                 }
             }
         }
         System.out.println("Erro ao sair da sala!");
+        return false;
     }
 
     // relacionados à Grupo
-    public void entrarGrupo(int grupoId) {
-        if (sistema.entrarGrupo(grupoId)) {
-            System.out.println("Grupo acessado com sucesso!");
-        } else {
-            System.out.println("Erro ao acessar grupo!");
-        }
+    public void entrarGrupo(int codigo, String username) {
+        if (!sistema.usuarioEstaNoGrupo(codigo, username)) {
+            if (sistema.entrarGrupo(codigo)) {
+                System.out.println("Entrou no grupo com sucesso!");
+            } else {
+                System.out.println("Erro ao acessar grupo!");
+            }
+        } else System.out.println("Você já está no grupo!");
     }
 
-    public void sairGrupo(int grupoId) {
-        if (sistema.sairGrupo(grupoId)) {
-            System.out.println("Saiu do grupo com sucesso!");
+    public void sairGrupo(int codigo) {
+        if (sistema.sairGrupo(codigo)) {
+            System.out.println("Saiu do grupo realizado com sucesso!");
         } else {
             System.out.println("Erro ao sair do grupo!");
         }
