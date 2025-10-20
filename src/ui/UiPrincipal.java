@@ -145,7 +145,9 @@ public class UiPrincipal {
                         System.out.println("Insira o código do grupo: ");
                         int codigoGrupo = scn.nextInt();
                         if (sistema.buscarGrupo(codigoGrupo) != null)
-                            telaGrupo(codigoGrupo);
+                            if (sistema.grupoEhDaSala(codigoGrupo, sala.getId()))
+                                telaGrupo(codigoGrupo);
+                            else System.out.println("Grupo não pertence à sala!");
                         else System.out.println("Grupo não encontrado!");
                     } else {
                         System.out.println("Você precisa estar na sala para ver um grupo!");

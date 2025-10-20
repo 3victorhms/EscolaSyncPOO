@@ -25,7 +25,13 @@ public class RepositorioUsuarioAtividade {
     }
 
     public boolean remover(UsuarioAtividade usuarioAtividade) {
-        return usuarioAtividades.remove(usuarioAtividade);
+        for (UsuarioAtividade uA : getUsuarioAtividades()) {
+            if (usuarioAtividade != null) {
+                if (uA.getAtividade().getId() == usuarioAtividade.getAtividade().getId() && uA.getUsuario().getUsername().equals(usuarioAtividade.getUsuario().getUsername()))
+                    return usuarioAtividades.remove(uA);
+            }
+        }
+        return false;
     }
 
     public boolean removerAtividadesDeAlunoDaSala(int idSala, String username) {

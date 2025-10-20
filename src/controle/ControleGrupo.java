@@ -42,4 +42,8 @@ public class ControleGrupo {
     public boolean alterarLider(int codigo, Usuario usuario) {
         return repositorioGrupo.alterarLider(codigo, usuario);
     }
+
+    public boolean grupoEhDaSala(Grupo grupo, Sala sala) {
+        return repositorioGrupo.grupoEhDaSala(grupo, sala);
+    }
 }

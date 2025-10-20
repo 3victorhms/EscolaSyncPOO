@@ -37,8 +37,9 @@ public class RepositorioGrupo {
 
     public boolean removerGruposSala(Sala sala) {
         for (Grupo grupo : this.getGrupos()) {
-            if (grupo.getSala().getId() == sala.getId())
-                this.excluir(grupo);
+            if (grupo != null && grupo.getSala() != null && sala != null)
+                if (grupo.getSala().getId() == sala.getId())
+                    this.excluir(grupo);
         }
         return true;
     }
@@ -69,5 +70,9 @@ public class RepositorioGrupo {
             return true;
         }
         return false;
+    }
+
+    public boolean grupoEhDaSala(Grupo grupo, Sala sala) {
+        return grupo.getSala().getId() == sala.getId();
     }
 }
