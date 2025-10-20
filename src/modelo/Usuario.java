@@ -33,4 +33,12 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return "Usuário {" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }

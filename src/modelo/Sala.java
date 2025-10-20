@@ -31,4 +31,28 @@ public class Sala {
     public String getNome() {
         return nome;
     }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Date getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public Usuario getLider() {
+        return lider;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setLider(Usuario lider) {
+        this.lider = lider;
+    }
 }

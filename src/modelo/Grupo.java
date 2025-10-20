@@ -20,11 +20,37 @@ public class Grupo {
         return new Grupo(nome, sala, lider);
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }
 
     public Sala getSala() {
         return sala;
+    }
+
+    public Usuario getLider() {
+        return lider;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setLider(Usuario lider) {
+        this.lider = lider;
+    }
+
+    @Override
+    public String toString() {
+        return "Grupo {" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", sala=" + sala.getNome() +
+                ", líder=" + lider.getUsername() +
+                '}';
     }
 }

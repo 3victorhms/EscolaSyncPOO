@@ -7,43 +7,63 @@ import java.util.List;
 
 public class RepositorioUsuario {
     List<Usuario> usuarios;
+    Usuario usuarioAtual;
 
     public RepositorioUsuario() {
         usuarios = new ArrayList<>();
     }
 
-    public boolean cadastrar(Usuario usuario) {
-        if (verificarUsername(usuario.getUsername())) {
-            usuarios.add(usuario);
-            return true;
-        }
-        return false;
+    public List<Usuario> getUsuarios() {
+        return usuarios;
     }
 
-    public boolean login(Usuario usuario) {
-        for (Usuario u : usuarios) {
-            if (u.getUsername().equalsIgnoreCase(usuario.getUsername()) && u.getPassword().equalsIgnoreCase(usuario.getPassword())) {
+    public Usuario getUsuarioAtual() {
+        return usuarioAtual;
+    }
+
+    public void setUsuarioAtual(Usuario usuarioAtual) {
+        this.usuarioAtual = usuarioAtual;
+    }
+
+        public boolean cadastrar (Usuario usuario){
+            if (verificarUsername(usuario.getUsername())) {
+                usuarios.add(usuario);
                 return true;
             }
+            return false;
         }
-        return false;
-    }
 
-    public boolean verificarUsername(String username) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getUsername().equals(username)) {
-                return false;
+        public boolean login (Usuario usuario){
+            for (Usuario u : usuarios) {
+                if (u.getUsername().equalsIgnoreCase(usuario.getUsername()) && u.getPassword().equalsIgnoreCase(usuario.getPassword())) {
+                    this.setUsuarioAtual(u);
+                    return true;
+                }
             }
+            return false;
         }
-        return true;
-    }
 
-    public Usuario buscarUsuario(String username){
-        for (Usuario usuario : usuarios) {
-            if (usuario.getUsername().equals(username)) {
-                return usuario;
-            }
+        public boolean logout () {
+            this.setUsuarioAtual(null);
+            return true;
         }
-        return null;
+
+        public boolean verificarUsername (String username){
+            for (Usuario usuario : usuarios) {
+                if (usuario.getUsername().equals(username)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public Usuario buscarUsuario (String username){
+            for (Usuario usuario : usuarios) {
+                if (usuario.getUsername().equals(username)) {
+                    return usuario;
+                }
+            }
+            return null;
+        }
+
     }
-}
