@@ -5,7 +5,7 @@ public class Usuario {
     protected String username;
     protected String password;
 
-    protected  static int proxId = 1;
+    protected static int proxId = 1;
 
     protected Usuario(String username, String password) {
         this.id = proxId++;

@@ -2,6 +2,7 @@ package controle;
 
 import modelo.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,11 @@ public class Sistema {
         controleUsuarioGrupo = new ControleUsuarioGrupo();
         controleGrupo = new ControleGrupo();
         controleSalaAtividade = new ControleSalaAtividade();
-        iniciar();
+        try {
+            iniciar();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static Sistema getInstance() {
@@ -42,12 +47,12 @@ public class Sistema {
         return instance;
     }
 
-    public void iniciar() {
+    public void iniciar() throws Exception{
         controleUsuario.cadastrar(Usuario.getInstance("v", "1"));
         controleUsuario.cadastrar(Usuario.getInstance("m", "2"));
 
-        controleSala.adicionar(Sala.getInstance("DS1.24", "DS1.24",new Date("06/02/2024"), this.buscarUsuario("v")));
-        controleSala.adicionar(Sala.getInstance("DS2.25", "DS2.25",new Date("06/02/2025"), this.buscarUsuario("m")));
+        controleSala.adicionar(Sala.getInstance("DS1.24", "DS1.24", new Date("06/02/2024"), this.buscarUsuario("v")));
+        controleSala.adicionar(Sala.getInstance("DS2.25", "DS2.25", new Date("06/02/2025"), this.buscarUsuario("m")));
         controleUsuarioSala.entrarSala(UsuarioSala.getInstance(this.buscarUsuario("v"), controleSala.buscarSala(1)));
         controleUsuarioSala.entrarSala(UsuarioSala.getInstance(this.buscarUsuario("m"), controleSala.buscarSala(2)));
 
@@ -56,10 +61,10 @@ public class Sistema {
         controleUsuarioGrupo.entrarGrupo(this.buscarUsuario("v"), controleGrupo.buscarGrupo(1));
         controleUsuarioGrupo.entrarGrupo(this.buscarUsuario("m"), controleGrupo.buscarGrupo(2));
 
-        controleAtividade.adicionar(Atividade.getInstance("Trabalho FP", "Trabalho FP", new Date("20/10/2024"), null, "FP", 10.0, controleSala.buscarSala(1)));
-        controleAtividade.adicionar(Atividade.getInstance("Trabalho POO", "Trabalho POO", new Date("20/10/2025"), null, "POO", 10.0, controleSala.buscarSala(2)));
-        controleSalaAtividade.adicionar(SalaAtividade.getInstance(controleSala.buscarSala(1), controleAtividade.buscarAtividade(1)));
-        controleSalaAtividade.adicionar(SalaAtividade.getInstance(controleSala.buscarSala(2), controleAtividade.buscarAtividade(2)));
+        controleAtividade.adicionar(1,"Trabalho FP", "Trabalho FP", "20/10/2024",  "FP", 10,  controleSala.buscarSala(1), "Trabalho");
+        controleAtividade.adicionar(1, "Trabalho POO", "Trabalho POO", "20/10/2025", "POO", 10 ,controleSala.buscarSala(2), "Trabalho");
+        controleSalaAtividade.adicionar(controleAtividade.buscarAtividade(2), controleSala.buscarSala(1));
+        controleSalaAtividade.adicionar(controleAtividade.buscarAtividade(2), controleSala.buscarSala(2));
     }
 
     // ============================================
@@ -104,10 +109,6 @@ public class Sistema {
         return controleSala.buscarSala(codigo);
     }
 
-    public boolean salaExiste(int codigo) {
-        return controleSala.buscarSala(codigo) != null;
-    }
-
     public boolean entrarSala(int idSala) {
         return controleUsuarioSala.entrarSala(
                 UsuarioSala.getInstance(controleUsuario.getUsuarioAtual(), controleSala.buscarSala(idSala))
@@ -148,10 +149,6 @@ public class Sistema {
         return controleSala.atualizarDescricao(id, novaDescricao);
     }
 
-    public boolean atualizarLiderSala(int id, String novoLider) {
-        return controleSala.atualizarLider(id, this.buscarUsuario(novoLider));
-    }
-
     public boolean usuarioEstaNaSala(int id, String username) {
         return controleUsuarioSala.usuarioEstaNaSala(id, username);
     }
@@ -159,12 +156,15 @@ public class Sistema {
     // ============================================
     // Atividade
     // ============================================
-    public boolean adicionarAtividade(Atividade atividade, int idSala) {
-        if (controleAtividade.adicionar(atividade)) {
-            return controleSalaAtividade.adicionar(SalaAtividade.getInstance(controleSala.buscarSala(idSala), atividade));
-        }
-        return false;
+    // ============================================
+
+    public void adicionarAtividade(int tipo, String nome, String descricao, String data, String materia, double valor, int salaId, String extra) throws Exception {
+        Sala sala = this.buscarSala(salaId);
+
+        controleAtividade.adicionar(tipo, nome, descricao, data, materia, valor, sala, extra);
+        controleSalaAtividade.adicionar(controleAtividade.buscarUltimaAtividade(), sala);
     }
+
 
     public boolean excluirAtividade(int codigo) {
         return controleAtividade.excluir(this.buscarAtividade(codigo));
@@ -174,15 +174,15 @@ public class Sistema {
         return controleAtividade.buscarAtividade(codigo);
     }
 
-    public boolean alterarNomeAtividade(int codigo, String nome) {
+    public boolean atualizarNomeAtividade(int codigo, String nome) {
         return controleAtividade.alterarNome(codigo, nome);
     }
 
-    public boolean alterarDescricaoAtividade(int codigo, String descricao) {
+    public boolean atualizarDescricaoAtividade(int codigo, String descricao) {
         return controleAtividade.alterarDescricao(codigo, descricao);
     }
 
-    public boolean alterarDataEntregaAtividade(int codigo, java.util.Date data) {
+    public boolean atualizarDataEntregaAtividade(int codigo, String data) {
         return controleAtividade.alterarDataEntrega(codigo, data);
     }
 
@@ -190,11 +190,11 @@ public class Sistema {
         return controleAtividade.buscarAtividade(codigo).getDataConclusao() != null;
     }
 
-    public boolean alterarMateriaAtividade(int codigo, String materia) {
+    public boolean atualizarMateriaAtividade(int codigo, String materia) {
         return controleAtividade.alterarMateria(codigo, materia);
     }
 
-    public boolean alterarValorAtividade(int codigo, double valor) {
+    public boolean atualizarValorAtividade(int codigo, double valor) {
         return controleAtividade.alterarValor(codigo, valor);
     }
 
@@ -202,7 +202,7 @@ public class Sistema {
         return controleSalaAtividade.listarAtividadesDaSala(controleSala.buscarSala(codigoSala));
     }
 
-    public boolean atividadeExiste (int codigo) {
+    public boolean atividadeExiste(int codigo) {
         return controleAtividade.buscarAtividade(codigo) != null;
     }
 

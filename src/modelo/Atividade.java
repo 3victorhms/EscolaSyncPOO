@@ -2,7 +2,7 @@ package modelo;
 
 import java.util.Date;
 
-public class Atividade {
+public abstract class Atividade {
 
     protected int id;
     protected String nome;
@@ -15,7 +15,9 @@ public class Atividade {
 
     protected static int proxId = 1;
 
-    protected Atividade(String nome, String descricao, Date dataEntrega, Date dataConclusao, String materia, double valor, Sala sala) {
+    protected Atividade(String nome, String descricao, Date dataEntrega, Date dataConclusao,
+                        String materia, double valor, Sala sala) {
+
         this.id = proxId++;
         this.nome = nome;
         this.descricao = descricao;
@@ -26,9 +28,7 @@ public class Atividade {
         this.sala = sala;
     }
 
-    public static Atividade getInstance(String nome, String descricao, Date dataEntrega, Date dataConclusao, String materia, double valor, Sala sala) {
-        return new Atividade(nome, descricao, dataEntrega, dataConclusao, materia, valor, sala);
-    }
+    public abstract String getTipo();
 
     public int getId() {
         return id;
@@ -88,7 +88,7 @@ public class Atividade {
 
     @Override
     public String toString() {
-        return "Atividade {" +
+        return getTipo() + " {" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
@@ -96,6 +96,7 @@ public class Atividade {
                 ", dataConclusao=" + dataConclusao +
                 ", materia='" + materia + '\'' +
                 ", valor=" + valor +
-                ", sala=" + sala.getNome();
+                ", sala=" + sala.getNome() +
+                '}';
     }
 }
