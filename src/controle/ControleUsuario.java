@@ -18,13 +18,13 @@ public class ControleUsuario {
         return repositorioUsuario.cadastrar(usuario);
     }
 
-    public Usuario buscarUsuario(String username){
+    public Usuario buscarUsuario(String username) {
         return repositorioUsuario.buscarUsuario(username);
     }
 
-public Usuario getUsuarioAtual() {
-    return repositorioUsuario.getUsuarioAtual();
-}
+    public Usuario getUsuarioAtual() {
+        return repositorioUsuario.getUsuarioAtual();
+    }
 
     public boolean logout() {
         return repositorioUsuario.logout();

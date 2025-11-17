@@ -28,8 +28,8 @@ public class RepositorioSala {
     }
 
     public Sala buscarSala(int idSala) {
-        for(Sala sala : this.getSalas()){
-            if(sala.getId() == idSala) return sala;
+        for (Sala sala : this.getSalas()) {
+            if (sala.getId() == idSala) return sala;
         }
         return null;
     }

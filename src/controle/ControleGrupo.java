@@ -26,7 +26,7 @@ public class ControleGrupo {
         return repositorioGrupo.removerGruposSala(sala);
     }
 
-    protected Grupo buscarGrupo(int codigoGrupo){
+    protected Grupo buscarGrupo(int codigoGrupo) {
         return repositorioGrupo.buscarGrupo(codigoGrupo);
     }
 

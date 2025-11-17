@@ -25,61 +25,65 @@ public class RepositorioAtividade {
         return atividades.remove(atividade);
     }
 
-    public Atividade buscarAtividade(int codigo){
-        for(Atividade atividade : this.getAtividades()){
-            if(atividade.getId() == codigo) return atividade;
+    public Atividade buscarAtividade(int codigo) {
+        for (Atividade atividade : this.getAtividades()) {
+            if (atividade.getId() == codigo) return atividade;
         }
         return null;
     }
 
-    public boolean alterarNome(int codigo, String nome){
+    public Atividade getUltimaAtividade() {
+        return this.buscarAtividade(atividades.size());
+    }
+
+    public boolean alterarNome(int codigo, String nome) {
         Atividade atividade = this.buscarAtividade(codigo);
-        if (atividade != null){
+        if (atividade != null) {
             atividade.setNome(nome);
             return true;
         }
         return false;
     }
 
-    public boolean alterarDescricao(int codigo, String descricao){
+    public boolean alterarDescricao(int codigo, String descricao) {
         Atividade atividade = this.buscarAtividade(codigo);
-        if (atividade != null){
+        if (atividade != null) {
             atividade.setDescricao(descricao);
             return true;
         }
         return false;
     }
 
-    public boolean alterarDataEntrega(int codigo, Date data){
+    public boolean alterarDataEntrega(int codigo, Date data) {
         Atividade atividade = this.buscarAtividade(codigo);
-        if (atividade != null){
+        if (atividade != null) {
             atividade.setDataEntrega(data);
             return true;
         }
         return false;
     }
 
-    public boolean alterarDataConclusao(int codigo, Date data){
+    public boolean alterarDataConclusao(int codigo, Date data) {
         Atividade atividade = this.buscarAtividade(codigo);
-        if (atividade != null){
+        if (atividade != null) {
             atividade.setDataConclusao(data);
             return true;
         }
         return false;
     }
 
-    public boolean alterarMateria(int codigo, String materia){
+    public boolean alterarMateria(int codigo, String materia) {
         Atividade atividade = this.buscarAtividade(codigo);
-        if (atividade != null){
+        if (atividade != null) {
             atividade.setMateria(materia);
             return true;
         }
         return false;
     }
 
-    public boolean alterarValor(int codigo, double valor){
+    public boolean alterarValor(int codigo, double valor) {
         Atividade atividade = this.buscarAtividade(codigo);
-        if (atividade != null){
+        if (atividade != null) {
             atividade.setValor(valor);
             return true;
         }

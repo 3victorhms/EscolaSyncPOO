@@ -13,8 +13,10 @@ public class ControleSalaAtividade {
     protected ControleSalaAtividade() {
         repositorioSalaAtividade = new RepositorioSalaAtividade();
     }
-    public boolean adicionar(SalaAtividade salaAtividade) {
-        return repositorioSalaAtividade.adicionar(salaAtividade);
+
+    public boolean adicionar(Atividade a, Sala s) {
+        if (a == null || s == null) return false;
+        return repositorioSalaAtividade.adicionar(SalaAtividade.getInstance(s, a));
     }
 
     public boolean remover(SalaAtividade salaAtividade) {

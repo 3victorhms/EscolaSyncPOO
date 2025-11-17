@@ -7,6 +7,7 @@ import modelo.Sala;
 import modelo.Usuario;
 
 import java.text.SimpleDateFormat;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -107,7 +108,7 @@ public class UiPrincipal {
 
             System.out.println("\n=== Atividades ===");
             List<Atividade> atividades = sistema.listarAtividadesDaSala(codigoSala);
-            uiAtividade.listarAtividades(atividades);
+            uiAtividade.listar(atividades);
 
             System.out.println("\nO que deseja fazer?");
 
@@ -156,7 +157,7 @@ public class UiPrincipal {
 
                 case 3:
                     if (usuarioEstaNaSala) {
-                        uiAtividade.adicionar(sala);
+                        uiAtividade.adicionar(sala.getId());
                     } else {
                         System.out.println("Você precisa estar na sala para criar uma atividade!");
                     }
@@ -164,9 +165,15 @@ public class UiPrincipal {
 
                 case 4:
                     if (usuarioEstaNaSala) {
-                        System.out.print("Digite o código da atividade: ");
-                        int idAtividade = scn.nextInt();
-                        telaAtividade(idAtividade);
+                        int idAtividade;
+                        try {
+                            System.out.print("Digite o código da atividade: ");
+                            idAtividade = scn.nextInt();
+                            telaAtividade(idAtividade);
+                        } catch (InputMismatchException e) {
+                            System.out.println("Insira apenas números!");
+                        }
+                        scn.nextLine();
                     } else {
                         System.out.println("Você precisa estar na sala para ver atividades!");
                     }
@@ -348,38 +355,57 @@ public class UiPrincipal {
 
     private boolean mostrarTelaPrincipal() {
         Sistema sistema = Sistema.getInstance();
-        mostrarCabecalho();
+        int opcao;
+        try {
+            mostrarCabecalho();
 
-        System.out.println("\n=== Minhas Salas ===");
-        List<Sala> salas = sistema.listarSalasDoUsuario();
-        uiSala.listar(salas);
+            System.out.println("\n=== Minhas Salas ===");
+            List<Sala> salas = sistema.listarSalasDoUsuario();
+            uiSala.listar(salas);
 
-        System.out.println("\nO que deseja fazer?");
-        System.out.println("[1] Ver sala");
-        System.out.println("[2] Entrar em sala");
-        System.out.println("[3] Criar sala");
-        System.out.println("[4] Meu perfil");
-        System.out.println("[0] Sair");
+            System.out.println("\nO que deseja fazer?");
+            System.out.println("[1] Ver sala");
+            System.out.println("[2] Entrar em sala");
+            System.out.println("[3] Criar sala");
+            System.out.println("[4] Meu perfil");
+            System.out.println("[0] Sair");
 
-        int opcao = scn.nextInt();
-        scn.nextLine();
 
+            opcao = scn.nextInt();
+            scn.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("Insira apenas números!");
+            scn.nextLine();
+            return true;
+        }
         switch (opcao) {
             case 0:
                 uiUsuario.logout();
                 return false;
 
             case 1:
-                System.out.print("Digite o código da sala: ");
-                int codigoSalaVer = scn.nextInt();
-                telaSala(codigoSalaVer);
-                return true;
-
+                int codigoSalaVer;
+                try {
+                    System.out.print("Digite o código da sala: ");
+                    codigoSalaVer = scn.nextInt();
+                    scn.nextLine();
+                    telaSala(codigoSalaVer);
+                    return true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Insira apenas números!");
+                    return true;
+                }
             case 2:
-                System.out.println("Digite o código da sala: ");
-                int codigoSalaEntrar = scn.nextInt();
-                uiUsuario.entrarSala(codigoSalaEntrar);
-                return true;
+                int codigoSalaEntrar;
+                try {
+                    System.out.println("Digite o código da sala: ");
+                    codigoSalaEntrar = scn.nextInt();
+                    uiUsuario.entrarSala(codigoSalaEntrar);
+                    return true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Insira apenas números!");
+                    return true;
+                }
 
             case 3:
                 uiSala.adicionar();

@@ -148,7 +148,7 @@ public class UiUsuario {
             System.out.println("[2] Minhas Atividades");
             System.out.println("[3] Meus Grupos");
             System.out.println("[0] Voltar");
-            
+
             int opcao = scanner.nextInt();
             scanner.nextLine();
 
@@ -173,7 +173,7 @@ public class UiUsuario {
     private void mostrarMinhasSalas() {
         List<Sala> salas = sistema.listarSalasDoUsuario();
         System.out.println("\n=== Minhas Salas ===");
-        
+
         if (salas == null || salas.isEmpty()) {
             System.out.println("Você ainda não está em nenhuma sala.");
         } else {
@@ -186,7 +186,7 @@ public class UiUsuario {
                 System.out.println("Líder: " + s.getLider().getUsername());
             }
         }
-        
+
         System.out.println("\nPressione ENTER para continuar...");
         new Scanner(System.in).nextLine();
     }
@@ -195,7 +195,7 @@ public class UiUsuario {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         List<Sala> salas = sistema.listarSalasDoUsuario();
         System.out.println("\n=== Minhas Atividades ===");
-        
+
         if (salas == null || salas.isEmpty()) {
             System.out.println("Você não possui atividades pois não está em nenhuma sala.");
             System.out.println("\nPressione ENTER para continuar...");
@@ -204,7 +204,7 @@ public class UiUsuario {
         }
 
         boolean temAtividades = false;
-        
+
         System.out.println("\nAtividades Pendentes:");
         for (Sala sala : salas) {
             List<Atividade> atividades = sistema.listarAtividadesDaSala(sala.getId());
@@ -232,7 +232,7 @@ public class UiUsuario {
     private void mostrarMeusGrupos() {
         List<Sala> salas = sistema.listarSalasDoUsuario();
         System.out.println("\n=== Meus Grupos ===");
-        
+
         if (salas == null || salas.isEmpty()) {
             System.out.println("Você não participa de nenhum grupo pois não está em nenhuma sala.");
             System.out.println("\nPressione ENTER para continuar...");
@@ -241,7 +241,7 @@ public class UiUsuario {
         }
 
         boolean temGrupos = false;
-        
+
         for (Sala sala : salas) {
             List<Grupo> grupos = sistema.listarGruposDaSala(sala.getId());
             if (grupos != null && !grupos.isEmpty()) {
