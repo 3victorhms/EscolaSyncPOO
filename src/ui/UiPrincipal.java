@@ -28,12 +28,12 @@ public class UiPrincipal {
     // Construtor
     // ============================================
     public UiPrincipal() {
-        uiUsuario = new UiUsuario();
-        uiSala = new UiSala();
-        uiGrupo = new UiGrupo();
-        uiAtividade = new UiAtividade();
         sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         sistema = Sistema.getInstance();
+        uiUsuario = new UiUsuario(scn);
+        uiSala = new UiSala(scn);
+        uiGrupo = new UiGrupo(scn);
+        uiAtividade = new UiAtividade(scn);
     }
 
     // ============================================
@@ -80,8 +80,15 @@ public class UiPrincipal {
             System.out.println("[1] Entrar na sala");
             System.out.println("[0] Voltar");
 
-            int opcao = scn.nextInt();
-            scn.nextLine();
+            int opcao;
+            try {
+                opcao = scn.nextInt();
+                scn.nextLine();
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor digite um número.");
+                scn.nextLine();
+                return;
+            }
 
             if (opcao == 1) {
                 if (sistema.entrarSala(sala.getId())) {
@@ -129,8 +136,15 @@ public class UiPrincipal {
 
             System.out.println("[0] Voltar");
 
-            int opcao = scn.nextInt();
-            scn.nextLine();
+            int opcao;
+            try {
+                opcao = scn.nextInt();
+                scn.nextLine();
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor digite um número.");
+                scn.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -144,7 +158,15 @@ public class UiPrincipal {
                 case 2:
                     if (usuarioEstaNaSala) {
                         System.out.println("Insira o código do grupo: ");
-                        int codigoGrupo = scn.nextInt();
+                        int codigoGrupo;
+                        try {
+                            codigoGrupo = scn.nextInt();
+                            scn.nextLine();
+                        } catch (java.util.InputMismatchException e) {
+                            System.out.println("Entrada inválida. Código deve ser numérico.");
+                            scn.nextLine();
+                            break;
+                        }
                         if (sistema.buscarGrupo(codigoGrupo) != null)
                             if (sistema.grupoEhDaSala(codigoGrupo, sala.getId()))
                                 telaGrupo(codigoGrupo);
@@ -168,7 +190,14 @@ public class UiPrincipal {
                         int idAtividade;
                         try {
                             System.out.print("Digite o código da atividade: ");
-                            idAtividade = scn.nextInt();
+                            try {
+                                idAtividade = scn.nextInt();
+                                scn.nextLine();
+                            } catch (java.util.InputMismatchException e) {
+                                System.out.println("Entrada inválida. ID deve ser numérico.");
+                                scn.nextLine();
+                                break;
+                            }
                             telaAtividade(idAtividade);
                         } catch (InputMismatchException e) {
                             System.out.println("Insira apenas números!");
@@ -264,8 +293,15 @@ public class UiPrincipal {
                 System.out.println("[4] Adicionar atividade a membro");
             }
 
-            int opcao = scn.nextInt();
-            scn.nextLine();
+            int opcao;
+            try {
+                opcao = scn.nextInt();
+                scn.nextLine();
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor digite um número.");
+                scn.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -306,7 +342,15 @@ public class UiPrincipal {
                         if (sistema.usuarioExiste(username))
                             if (sistema.usuarioEstaNoGrupo(g.getId(), username)) {
                                 System.out.println("Digite o id da atividade:");
-                                int idAtividade = scn.nextInt();
+                                int idAtividade;
+                                try {
+                                    idAtividade = scn.nextInt();
+                                    scn.nextLine();
+                                } catch (java.util.InputMismatchException e) {
+                                    System.out.println("Entrada inválida. ID deve ser numérico.");
+                                    scn.nextLine();
+                                    break;
+                                }
                                 if (sistema.atividadeExiste(idAtividade)) {
                                     uiUsuario.adicionarAtividade(idAtividade, username);
                                 } else System.out.println("Atividade não encontrada!");
@@ -335,8 +379,16 @@ public class UiPrincipal {
         System.out.println("[0] Sair");
 
         System.out.println("\nO que deseja fazer?");
-        int opcao = scn.nextInt();
-        scn.nextLine();
+        int opcao;
+        try {
+            opcao = scn.nextInt();
+            scn.nextLine();
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Entrada inválida. Por favor digite um número.");
+            scn.nextLine();
+            // Não encerra a aplicação — retorna true para continuar exibindo a tela de login
+            return true;
+        }
 
         switch (opcao) {
             case 1:
@@ -371,8 +423,14 @@ public class UiPrincipal {
             System.out.println("[0] Sair");
 
 
-            opcao = scn.nextInt();
-            scn.nextLine();
+            try {
+                opcao = scn.nextInt();
+                scn.nextLine();
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor digite um número.");
+                scn.nextLine();
+                return true;
+            }
         } catch (InputMismatchException e) {
             System.out.println("Insira apenas números!");
             scn.nextLine();
@@ -387,7 +445,14 @@ public class UiPrincipal {
                 int codigoSalaVer;
                 try {
                     System.out.print("Digite o código da sala: ");
-                    codigoSalaVer = scn.nextInt();
+                    try {
+                        codigoSalaVer = scn.nextInt();
+                        scn.nextLine();
+                    } catch (java.util.InputMismatchException e) {
+                        System.out.println("Entrada inválida. Código deve ser numérico.");
+                        scn.nextLine();
+                        break;
+                    }
                     scn.nextLine();
                     telaSala(codigoSalaVer);
                     return true;
@@ -399,7 +464,14 @@ public class UiPrincipal {
                 int codigoSalaEntrar;
                 try {
                     System.out.println("Digite o código da sala: ");
-                    codigoSalaEntrar = scn.nextInt();
+                    try {
+                        codigoSalaEntrar = scn.nextInt();
+                        scn.nextLine();
+                    } catch (java.util.InputMismatchException e) {
+                        System.out.println("Entrada inválida. Código deve ser numérico.");
+                        scn.nextLine();
+                        break;
+                    }
                     uiUsuario.entrarSala(codigoSalaEntrar);
                     return true;
                 } catch (InputMismatchException e) {

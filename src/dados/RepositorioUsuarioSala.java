@@ -38,9 +38,13 @@ public class RepositorioUsuarioSala {
     }
 
     public boolean removerAlunosSala(Sala sala) {
+        List<UsuarioSala> aRemover = new ArrayList<>();
         for (UsuarioSala usuarioSala : this.getUsuarioSalas()) {
             if (usuarioSala.getSala().equals(sala))
-                this.remover(usuarioSala);
+                aRemover.add(usuarioSala);
+        }
+        for (UsuarioSala usuarioSala : aRemover) {
+            this.remover(usuarioSala);
         }
         return true;
     }

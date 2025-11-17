@@ -1,6 +1,7 @@
 package ui;
 
 import controle.Sistema;
+import excecoes.EmptyException;
 import modelo.Atividade;
 import modelo.Grupo;
 import modelo.Sala;
@@ -8,6 +9,7 @@ import modelo.Usuario;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -18,22 +20,42 @@ public class UiUsuario {
 
     public UiUsuario() {
         rnd = new Random();
-        scn = new Scanner(System.in);
         sistema = Sistema.getInstance();
     }
 
+    public UiUsuario(Scanner scn) {
+        rnd = new Random();
+        this.scn = scn;
+        sistema = Sistema.getInstance();
+    }
     // autenticação
     public void login() {
-        System.out.print("Digite seu username: ");
-        String username = scn.nextLine();
+        try {
+            // defensive: garantir scanner válido (pode ocorrer em execuções isoladas)
+            if (scn == null) scn = new Scanner(System.in);
+            System.out.print("Digite seu username: ");
+            String username = scn.nextLine().trim();
 
-        System.out.print("Digite sua senha: ");
-        String password = scn.nextLine();
+            System.out.print("Digite sua senha: ");
+            String password = scn.nextLine().trim();
 
-        if (sistema.login(Usuario.getInstance(username, password))) {
-            System.out.println("Login efetuado com sucesso!");
-        } else {
-            System.out.println("Login falhou!");
+            try {
+                if (sistema.loginComValidacao(Usuario.getInstance(username, password))) {
+                    System.out.println("Login efetuado com sucesso!");
+                } else {
+                    System.out.println("Login falhou!");
+                }
+            } catch (EmptyException e) {
+                System.out.println("ERRO: " + e.getMessage());
+            } catch (RuntimeException e) {
+                // fallback para exceções inesperadas vindas do Controller
+                System.out.println("ERRO inesperado durante login: " + e.getMessage());
+            }
+
+        } catch (NoSuchElementException | IllegalStateException e) {
+            System.out.println("Entrada encerrada ou indisponível. Operação abortada.");
+        } catch (Exception e) {
+            System.out.println("Erro ao ler entrada: " + e.getMessage());
         }
     }
 
@@ -46,16 +68,31 @@ public class UiUsuario {
     }
 
     public void cadastrar() {
-        System.out.println("Insira seu username: ");
-        String username = scn.nextLine();
+        try {
+            // defensive: garantir scanner válido
+            if (scn == null) scn = new Scanner(System.in);
+            System.out.println("Insira seu username: ");
+            String username = scn.nextLine().trim();
 
-        System.out.println("Insira sua senha: ");
-        String password = scn.nextLine();
+            System.out.println("Insira sua senha: ");
+            String password = scn.nextLine().trim();
 
-        if (sistema.cadastrar(Usuario.getInstance(username, password))) {
-            System.out.println("Cadastro efetuado com sucesso!");
-        } else {
-            System.out.println("Cadastro falhou!");
+            try {
+                if (sistema.cadastrarComValidacao(Usuario.getInstance(username, password))) {
+                    System.out.println("Cadastro efetuado com sucesso!");
+                } else {
+                    System.out.println("Cadastro falhou!");
+                }
+            } catch (EmptyException e) {
+                System.out.println("ERRO: " + e.getMessage());
+            } catch (RuntimeException e) {
+                System.out.println("ERRO inesperado durante cadastro: " + e.getMessage());
+            }
+
+        } catch (NoSuchElementException | IllegalStateException e) {
+            System.out.println("Entrada encerrada ou indisponível. Operação abortada.");
+        } catch (Exception e) {
+            System.out.println("Erro ao ler entrada: " + e.getMessage());
         }
     }
 
@@ -137,7 +174,6 @@ public class UiUsuario {
 
     public void telaPerfil() {
         Usuario usuario = sistema.getUsuarioAtual();
-        Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println("\n=====================================");
@@ -149,8 +185,15 @@ public class UiUsuario {
             System.out.println("[3] Meus Grupos");
             System.out.println("[0] Voltar");
 
-            int opcao = scanner.nextInt();
-            scanner.nextLine();
+            int opcao;
+            try {
+                opcao = scn.nextInt();
+                scn.nextLine();
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor digite um número.");
+                scn.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -187,8 +230,8 @@ public class UiUsuario {
             }
         }
 
-        System.out.println("\nPressione ENTER para continuar...");
-        new Scanner(System.in).nextLine();
+    System.out.println("\nPressione ENTER para continuar...");
+    scn.nextLine();
     }
 
     private void mostrarMinhasAtividades() {
@@ -199,7 +242,7 @@ public class UiUsuario {
         if (salas == null || salas.isEmpty()) {
             System.out.println("Você não possui atividades pois não está em nenhuma sala.");
             System.out.println("\nPressione ENTER para continuar...");
-            new Scanner(System.in).nextLine();
+            scn.nextLine();
             return;
         }
 
@@ -225,8 +268,8 @@ public class UiUsuario {
             System.out.println("Nenhuma atividade pendente!");
         }
 
-        System.out.println("\nPressione ENTER para continuar...");
-        new Scanner(System.in).nextLine();
+    System.out.println("\nPressione ENTER para continuar...");
+    scn.nextLine();
     }
 
     private void mostrarMeusGrupos() {
@@ -236,7 +279,7 @@ public class UiUsuario {
         if (salas == null || salas.isEmpty()) {
             System.out.println("Você não participa de nenhum grupo pois não está em nenhuma sala.");
             System.out.println("\nPressione ENTER para continuar...");
-            new Scanner(System.in).nextLine();
+            scn.nextLine();
             return;
         }
 
@@ -262,7 +305,7 @@ public class UiUsuario {
             System.out.println("Você não participa de nenhum grupo!");
         }
 
-        System.out.println("\nPressione ENTER para continuar...");
-        new Scanner(System.in).nextLine();
+    System.out.println("\nPressione ENTER para continuar...");
+    scn.nextLine();
     }
 }

@@ -24,17 +24,25 @@ public class RepositorioUsuarioGrupo {
     }
 
     public boolean sairGrupo(Usuario usuarioAtual, Grupo grupo) {
+        List<UsuarioGrupo> aRemover = new ArrayList<>();
         for (UsuarioGrupo usuarioGrupo : this.getUsuarioGrupos()) {
             if (usuarioGrupo.getUsuario().equals(usuarioAtual) && usuarioGrupo.getGrupo().equals(grupo))
-                this.usuarioGrupos.remove(usuarioGrupo);
+                aRemover.add(usuarioGrupo);
+        }
+        for (UsuarioGrupo usuarioGrupo : aRemover) {
+            this.usuarioGrupos.remove(usuarioGrupo);
         }
         return true;
     }
 
     public boolean removerAlunoDeGrupoDaSala(Sala sala) {
+        List<UsuarioGrupo> aRemover = new ArrayList<>();
         for (UsuarioGrupo usuarioGrupo : this.getUsuarioGrupos()) {
             if (usuarioGrupo.getGrupo().getSala().equals(sala))
-                this.usuarioGrupos.remove(usuarioGrupo);
+                aRemover.add(usuarioGrupo);
+        }
+        for (UsuarioGrupo usuarioGrupo : aRemover) {
+            this.usuarioGrupos.remove(usuarioGrupo);
         }
         return true;
     }

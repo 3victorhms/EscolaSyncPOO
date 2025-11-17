@@ -1,6 +1,7 @@
 package controle;
 
 import dados.RepositorioGrupo;
+import excecoes.EmptyException;
 import modelo.Grupo;
 import modelo.Sala;
 import modelo.Usuario;
@@ -15,6 +16,20 @@ public class ControleGrupo {
     }
 
     protected boolean adicionar(Grupo grupo) {
+        return repositorioGrupo.adicionar(grupo);
+    }
+
+    // Novo método com validações
+    public boolean adicionarComValidacao(Grupo grupo) throws EmptyException {
+        if (grupo == null)
+            throw new EmptyException("Grupo não pode ser nulo.");
+        if (grupo.getNome() == null || grupo.getNome().isBlank())
+            throw new EmptyException("O nome do grupo não pode ser vazio.");
+        if (grupo.getSala() == null)
+            throw new EmptyException("O grupo deve estar associado a uma sala.");
+        if (grupo.getLider() == null)
+            throw new EmptyException("O grupo deve ter um líder.");
+        
         return repositorioGrupo.adicionar(grupo);
     }
 
@@ -36,6 +51,12 @@ public class ControleGrupo {
 
 
     public boolean alterarNome(int codigo, String nome) {
+        return repositorioGrupo.alterarNome(codigo, nome);
+    }
+
+    public boolean alterarNomeComValidacao(int codigo, String nome) throws EmptyException {
+        if (nome == null || nome.isBlank())
+            throw new EmptyException("O nome do grupo não pode ser vazio.");
         return repositorioGrupo.alterarNome(codigo, nome);
     }
 

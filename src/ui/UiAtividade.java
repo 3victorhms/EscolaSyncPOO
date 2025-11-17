@@ -11,17 +11,24 @@ public class UiAtividade {
     private final Scanner scn;
     private final Sistema sistema;
 
-    public UiAtividade() {
-        scn = new Scanner(System.in);
+    public UiAtividade(Scanner scn) {
+        this.scn = scn;
         sistema = Sistema.getInstance();
     }
 
     public void adicionar(int salaId) {
+        int tipo;
+        double valor;
 
-        System.out.println("Qual o tipo da atividade?");
-        System.out.println("[1] Tarefa");
-        System.out.println("[2] Prova");
-        int tipo = Integer.parseInt(scn.nextLine());
+        try {
+            System.out.println("Qual o tipo da atividade?");
+            System.out.println("[1] Tarefa");
+            System.out.println("[2] Prova");
+            tipo = Integer.parseInt(scn.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("ERRO: Tipo deve ser um número inteiro!");
+            return;
+        }
 
         System.out.print("Nome: ");
         String nome = scn.nextLine();
@@ -35,8 +42,13 @@ public class UiAtividade {
         System.out.print("Matéria: ");
         String materia = scn.nextLine();
 
-        System.out.print("Valor: ");
-        double valor = Double.parseDouble(scn.nextLine());
+        try {
+            System.out.print("Valor: ");
+            valor = Double.parseDouble(scn.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("ERRO: Valor deve ser um número válido!");
+            return;
+        }
 
         String extra;
         if (tipo == 1) {
@@ -50,7 +62,6 @@ public class UiAtividade {
         try {
             sistema.adicionarAtividade(tipo, nome, descricao, data, materia, valor, salaId, extra);
             System.out.println(">>> Atividade adicionada com sucesso!");
-
         } catch (Exception e) {
             System.out.println("ERRO: " + e.getMessage());
         }
@@ -72,6 +83,7 @@ public class UiAtividade {
     }
 
     public void atualizar(int id) {
+        int op;
 
         System.out.println("O que deseja atualizar?");
         System.out.println("[1] Nome");
@@ -83,33 +95,52 @@ public class UiAtividade {
         System.out.println("[7] Sair");
         System.out.print(">>> ");
 
-        int op = Integer.parseInt(scn.nextLine());
+        try {
+            op = Integer.parseInt(scn.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("ERRO: Opção deve ser um número inteiro!");
+            return;
+        }
 
         try {
             switch (op) {
                 case 1: {
                     System.out.print("Novo nome: ");
                     sistema.atualizarNomeAtividade(id, scn.nextLine());
+                    break;
                 }
                 case 2: {
                     System.out.print("Nova descrição: ");
                     sistema.atualizarDescricaoAtividade(id, scn.nextLine());
+                    break;
                 }
                 case 3: {
                     System.out.print("Nova data (dd/MM/yyyy): ");
                     sistema.atualizarDataEntregaAtividade(id, scn.nextLine());
+                    break;
                 }
                 case 5: {
                     System.out.print("Nova matéria: ");
                     sistema.atualizarMateriaAtividade(id, scn.nextLine());
+                    break;
                 }
                 case 6: {
-                    System.out.print("Novo valor: ");
-                    double valor = Double.parseDouble(scn.nextLine());
-                    sistema.atualizarValorAtividade(id, valor);
+                    try {
+                        System.out.print("Novo valor: ");
+                        double valor = Double.parseDouble(scn.nextLine());
+                        sistema.atualizarValorAtividade(id, valor);
+                    } catch (NumberFormatException e) {
+                        System.out.println("ERRO: Valor deve ser um número válido!");
+                        return;
+                    }
+                    break;
                 }
                 case 7:
                     System.out.println("Voltando...");
+                    return;
+                default:
+                    System.out.println("Opção inválida!");
+                    return;
             }
             System.out.println(">>> Atualização realizada!");
 

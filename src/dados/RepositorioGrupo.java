@@ -36,10 +36,14 @@ public class RepositorioGrupo {
     }
 
     public boolean removerGruposSala(Sala sala) {
+        List<Grupo> aRemover = new ArrayList<>();
         for (Grupo grupo : this.getGrupos()) {
             if (grupo != null && grupo.getSala() != null && sala != null)
                 if (grupo.getSala().getId() == sala.getId())
-                    this.excluir(grupo);
+                    aRemover.add(grupo);
+        }
+        for (Grupo grupo : aRemover) {
+            this.excluir(grupo);
         }
         return true;
     }

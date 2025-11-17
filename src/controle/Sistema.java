@@ -63,7 +63,7 @@ public class Sistema {
 
         controleAtividade.adicionar(1,"Trabalho FP", "Trabalho FP", "20/10/2024",  "FP", 10,  controleSala.buscarSala(1), "Trabalho");
         controleAtividade.adicionar(1, "Trabalho POO", "Trabalho POO", "20/10/2025", "POO", 10 ,controleSala.buscarSala(2), "Trabalho");
-        controleSalaAtividade.adicionar(controleAtividade.buscarAtividade(2), controleSala.buscarSala(1));
+        controleSalaAtividade.adicionar(controleAtividade.buscarAtividade(1), controleSala.buscarSala(1));
         controleSalaAtividade.adicionar(controleAtividade.buscarAtividade(2), controleSala.buscarSala(2));
     }
 
@@ -74,7 +74,29 @@ public class Sistema {
         return controleUsuario.login(usuario);
     }
 
+    public boolean loginComValidacao(Usuario usuario) throws excecoes.EmptyException {
+        if (usuario == null)
+            throw new excecoes.EmptyException("Usuário não pode ser nulo.");
+        if (usuario.getUsername() == null || usuario.getUsername().isBlank())
+            throw new excecoes.EmptyException("O username não pode ser vazio.");
+        if (usuario.getPassword() == null || usuario.getPassword().isBlank())
+            throw new excecoes.EmptyException("A senha não pode ser vazia.");
+
+        return controleUsuario.login(usuario);
+    }
+
     public boolean cadastrar(Usuario usuario) {
+        return controleUsuario.cadastrar(usuario);
+    }
+
+    public boolean cadastrarComValidacao(Usuario usuario) throws excecoes.EmptyException {
+        if (usuario == null)
+            throw new excecoes.EmptyException("Usuário não pode ser nulo.");
+        if (usuario.getUsername() == null || usuario.getUsername().isBlank())
+            throw new excecoes.EmptyException("O username não pode ser vazio.");
+        if (usuario.getPassword() == null || usuario.getPassword().isBlank())
+            throw new excecoes.EmptyException("A senha não pode ser vazia.");
+
         return controleUsuario.cadastrar(usuario);
     }
 
@@ -101,8 +123,28 @@ public class Sistema {
         return controleSala.adicionar(sala);
     }
 
+    public boolean adicionarSalaComValidacao(Sala sala) throws excecoes.EmptyException {
+        return controleSala.adicionarComValidacao(sala);
+    }
+
     public boolean excluirSala(int codigo) {
-        return controleSala.excluir(controleSala.buscarSala(codigo));
+        Sala sala = controleSala.buscarSala(codigo);
+        if (sala != null && controleSala.excluir(sala)) {
+            controleUsuarioSala.removerAlunosSala(sala);
+            
+            List<Atividade> atividades = controleSalaAtividade.listarAtividadesDaSala(sala);
+            for (Atividade atividade : atividades) {
+                excluirAtividade(atividade.getId());
+            }
+            
+            List<Grupo> grupos = controleGrupo.listarGruposDaSala(sala);
+            for (Grupo grupo : grupos) {
+                excluirGrupo(grupo.getId());
+            }
+            
+            return true;
+        }
+        return false;
     }
 
     public Sala buscarSala(int codigo) {
@@ -248,6 +290,10 @@ public class Sistema {
     // ============================================
     public boolean adicionarGrupo(Grupo grupo) {
         return controleGrupo.adicionar(grupo);
+    }
+
+    public boolean adicionarGrupoComValidacao(Grupo grupo) throws excecoes.EmptyException {
+        return controleGrupo.adicionarComValidacao(grupo);
     }
 
     public boolean excluirGrupo(int codigo) {

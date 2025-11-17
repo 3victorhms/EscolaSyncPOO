@@ -35,10 +35,14 @@ public class RepositorioUsuarioAtividade {
     }
 
     public boolean removerAtividadesDeAlunoDaSala(int idSala, String username) {
+        List<UsuarioAtividade> aRemover = new ArrayList<>();
         for (UsuarioAtividade usuarioAtividade : this.getUsuarioAtividades()) {
             if (usuarioAtividade.getAtividade().getSala().getId() == idSala && usuarioAtividade.getUsuario().getUsername().equals(username)) {
-                this.remover(usuarioAtividade);
+                aRemover.add(usuarioAtividade);
             }
+        }
+        for (UsuarioAtividade usuarioAtividade : aRemover) {
+            this.remover(usuarioAtividade);
         }
         return true;
     }

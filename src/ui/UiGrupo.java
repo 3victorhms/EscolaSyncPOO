@@ -1,6 +1,7 @@
 package ui;
 
 import controle.Sistema;
+import excecoes.EmptyException;
 import modelo.Grupo;
 import modelo.Sala;
 import modelo.Usuario;
@@ -16,21 +17,28 @@ public class UiGrupo {
 
     public UiGrupo() {
         rnd = new Random();
-        scn = new Scanner(System.in);
+        sistema = Sistema.getInstance();
+    }
+
+    public UiGrupo(Scanner scn) {
+        rnd = new Random();
+        this.scn = scn;
         sistema = Sistema.getInstance();
     }
 
     public void adicionar(Sala sala, Usuario usuario) {
         System.out.println("Insira o nome do grupo:");
         String nome = scn.nextLine();
-        if (nome != null && !nome.isEmpty()) {
-            if (sistema.adicionarGrupo(Grupo.getInstance(nome, sala, usuario))) {
+        Sala s = sala;
+        Grupo g = Grupo.getInstance(nome, s, usuario);
+        try {
+            if (sistema.adicionarGrupoComValidacao(g)) {
                 System.out.println("Grupo adicionado com sucesso!");
             } else {
                 System.out.println("Erro ao adicionar grupo!");
             }
-        } else {
-            System.out.println("Erro ao adicionar grupo!");
+        } catch (EmptyException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
     }
 
@@ -60,8 +68,15 @@ public class UiGrupo {
         System.out.println("[2] Transferir liderança");
         System.out.println("[0] Voltar");
 
-        int opcao = scn.nextInt();
-        scn.nextLine();
+        int opcao;
+        try {
+            opcao = scn.nextInt();
+            scn.nextLine();
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Entrada inválida. Por favor digite um número.");
+            scn.nextLine();
+            return;
+        }
 
         switch (opcao) {
             case 1:

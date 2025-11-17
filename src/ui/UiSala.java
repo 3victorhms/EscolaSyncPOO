@@ -1,6 +1,7 @@
 package ui;
 
 import controle.Sistema;
+import excecoes.EmptyException;
 import modelo.Sala;
 
 import java.text.ParseException;
@@ -19,7 +20,13 @@ public class UiSala {
 
     public UiSala() {
         rnd = new Random();
-        scn = new Scanner(System.in);
+        sistema = Sistema.getInstance();
+        sdf = new SimpleDateFormat("dd/MM/yyyy");
+    }
+
+    public UiSala(Scanner scn) {
+        rnd = new Random();
+        this.scn = scn;
         sistema = Sistema.getInstance();
         sdf = new SimpleDateFormat("dd/MM/yyyy");
     }
@@ -27,22 +34,21 @@ public class UiSala {
     public void adicionar() {
         System.out.println("Insira o nome da sala: ");
         String nome = scn.nextLine();
-        if (nome != null && !nome.isEmpty()) {
-            System.out.println("Insira a descrição da sala: ");
-            String descricao = scn.nextLine();
-            if (descricao != null && !descricao.isEmpty()) {
-                Date dataCriacao = new Date();
-                Sala sala = Sala.getInstance(nome, descricao, dataCriacao, sistema.buscarUsuario(sistema.getUsuarioAtual().getUsername()));
-                if (sistema.adicionarSala(sala))
-                    if (sistema.entrarSala(sala.getId()))
-                        System.out.println(">>> Sala criada com sucesso!");
-                    else
-                        System.out.println(">>> Falha ao criar sala!");
+        System.out.println("Insira a descrição da sala: ");
+        String descricao = scn.nextLine();
+        Date dataCriacao = new Date();
+        Sala sala = Sala.getInstance(nome, descricao, dataCriacao, sistema.buscarUsuario(sistema.getUsuarioAtual().getUsername()));
+        try {
+            if (sistema.adicionarSalaComValidacao(sala)) {
+                if (sistema.entrarSala(sala.getId()))
+                    System.out.println(">>> Sala criada com sucesso!");
+                else
+                    System.out.println(">>> Falha ao criar sala!");
             } else {
-                System.out.println(">>> Descrição inválida!");
+                System.out.println(">>> Falha ao criar sala!");
             }
-        } else {
-            System.out.println(">>> Nome inválido!");
+        } catch (EmptyException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
     }
 
@@ -78,8 +84,15 @@ public class UiSala {
         System.out.println("[2] Descrição");
         System.out.println("[0] Voltar");
 
-        int opcao = scn.nextInt();
-        scn.nextLine();
+        int opcao;
+        try {
+            opcao = scn.nextInt();
+            scn.nextLine();
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Entrada inválida. Por favor digite um número.");
+            scn.nextLine();
+            return;
+        }
 
         switch (opcao) {
             case 1:
