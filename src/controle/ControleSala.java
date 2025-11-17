@@ -34,13 +34,4 @@ public class ControleSala {
     public boolean atualizarLider(int id, Usuario usuario) {
         return repositorioSala.atualizarLider(id, usuario);
     }
-
-    protected boolean entrarSala(int id) {
-        Sala sala = repositorioSala.buscar(id);
-        return sala != null;
-    }
-
-    protected Sala buscar(int id) {
-        return repositorioSala.buscar(id);
-    }
 }
