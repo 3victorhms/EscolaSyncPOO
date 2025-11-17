@@ -526,8 +526,15 @@ public class UiPrincipal {
             System.out.println("[3] Excluir atividade");
             System.out.println("[0] Voltar");
 
-            int opcao = scn.nextInt();
-            scn.nextLine();
+            int opcao;
+            try {
+                opcao = scn.nextInt();
+                scn.nextLine();
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor digite um número.");
+                scn.nextLine();
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
